@@ -5,435 +5,1384 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Concurso de Dibujo · El Mono Juan — Argentina Space</title>
   <meta name="description" content="Concurso de dibujo de Argentina Space: dibujá a Juan, el primer mono astronauta argentino, y viajá al espacio con tu imaginación. Dos categorías, premio tablet de dibujo. Cierre 5 de julio 2026." />
+  <meta name="theme-color" content="#000D21" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Concurso de Dibujo · El Mono Juan — Argentina Space" />
+  <meta property="og:description" content="Dibujá al primer mono astronauta argentino y viajá al espacio con tu imaginación. Premio: tablet de dibujo. Cierre 5 de julio 2026, 18:00 hs." />
+  <meta property="og:image" content="assets/photos/mono_juan.webp" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220"><path d="M110 10 C110 65.2 65.2 110 10 110 C65.2 110 110 154.8 110 210 C110 154.8 154.8 110 210 110 C154.8 110 110 65.2 110 10 Z" fill="%23F8B135"/></svg>' />
 
   <!-- ============================================================
        FUENTES — Sistema tipográfico del brandbook
-       Michroma (display/títulos/números) · Montserrat (cuerpo) · Space Grotesk (apoyo)
+       Michroma (display) · Montserrat (cuerpo) · Space Grotesk (apoyo)
        ============================================================ -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Montserrat:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="assets/photos/fondo_tierra_orbita.jpg" />
 
-  <!-- ============================================================
-       TAILWIND PLAY CDN + tokens de marca Argentina Space
-       ============================================================ -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'space-black': '#000D21',  // Negro Profundo "Espacio" — fondo base
-            'space-navy':  '#002654',  // Azul Oscuro "Horizonte Nocturno" — paneles
-            'space-steel': '#546175',  // Gris Azulado "Acero de Módulo" — neutros/soporte
-            'space-cyan':  '#48F6FF',  // Cian Brillante "Plasma de Iones" — acento/datos/links
-            'space-orange':'#F8B135'   // Naranja "Resplandor" — color de marca / CTAs
-          },
-          fontFamily: {
-            display: ['Michroma', 'Eurostile', 'Orbitron', 'sans-serif'],
-            body:    ['Montserrat', '"Helvetica Neue"', 'Arial', 'sans-serif'],
-            alt:     ['"Space Grotesk"', 'Inter', 'sans-serif']
-          }
-        }
-      }
-    }
-  </script>
-
-  <!-- ============================================================
-       ESTILOS CUSTOM — atmósfera espacial, órbitas, máscara estrella,
-       animaciones de reveal y utilidades de marca
-       ============================================================ -->
   <style>
+    /* ============================================================
+       TOKENS DE MARCA — Sistema Cromático Argentina Space (pág. 6)
+       ============================================================ */
     :root {
-      --space-black: #000D21;
-      --space-navy:  #002654;
-      --space-steel: #546175;
-      --space-cyan:  #48F6FF;
-      --space-orange:#F8B135;
+      --black:  #000D21;   /* Negro Profundo · Espacio */
+      --navy:   #002654;   /* Azul Oscuro · Horizonte Nocturno */
+      --steel:  #546175;   /* Gris Azulado · Acero de Módulo */
+      --cyan:   #48F6FF;   /* Cian Brillante · Plasma de Iones */
+      --orange: #F8B135;   /* Naranja · Resplandor */
+      --grad-blue: #1B459F;/* Stop superior del degradado del isotipo */
+
+      --iso-gradient: linear-gradient(180deg, var(--grad-blue) 0%, var(--orange) 100%);
+
+      --w-90: rgba(255,255,255,.9);
+      --w-75: rgba(255,255,255,.75);
+      --w-60: rgba(255,255,255,.6);
+      --w-45: rgba(255,255,255,.45);
+      --w-12: rgba(255,255,255,.12);
+      --w-08: rgba(255,255,255,.08);
+
+      --font-display: 'Michroma', 'Eurostile', 'Orbitron', sans-serif;
+      --font-body: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+      --font-alt: 'Space Grotesk', 'Inter', sans-serif;
+
+      --container: 1180px;
+      --gutter: clamp(20px, 5vw, 40px);
+      --nav-h: 72px;
+      --sec-pad: clamp(88px, 11vw, 144px);
+
+      --r-sm: 12px;
+      --r-md: 20px;
+      --r-lg: 28px;
+
+      --ease: cubic-bezier(.22,.61,.36,1);
+      --ease-spring: cubic-bezier(.34,1.4,.4,1);
     }
 
+    /* ============================================================
+       BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    /* compensa el navbar sticky al saltar a un ancla */
-    section[id] { scroll-margin-top: 84px; }
+    section[id] { scroll-margin-top: calc(var(--nav-h) + 12px); }
 
     body {
-      background-color: var(--space-black);
+      background: var(--black);
       color: #fff;
-      font-family: 'Montserrat', sans-serif;
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    ul, ol { list-style: none; }
 
-    /* Foco visible accesible (navegación por teclado, WCAG AA) */
-    a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
-      outline: 3px solid var(--space-cyan);
+    ::selection { background: var(--cyan); color: var(--black); }
+
+    a:focus-visible, button:focus-visible, summary:focus-visible {
+      outline: 3px solid var(--cyan);
       outline-offset: 3px;
       border-radius: 4px;
     }
 
-    /* --- Campo de estrellas sutil para fondos espaciales --- */
-    .starfield {
-      background-image:
-        radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,.7), transparent),
-        radial-gradient(1.5px 1.5px at 75% 15%, rgba(72,246,255,.6), transparent),
-        radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,.5), transparent),
-        radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,.45), transparent),
-        radial-gradient(1.5px 1.5px at 10% 80%, rgba(255,255,255,.5), transparent),
-        radial-gradient(1px 1px at 35% 92%, rgba(72,246,255,.4), transparent),
-        radial-gradient(1px 1px at 65% 40%, rgba(255,255,255,.4), transparent),
-        radial-gradient(1.5px 1.5px at 90% 50%, rgba(255,255,255,.4), transparent);
-      background-repeat: no-repeat;
+    /* Grano sutil de textura sobre toda la página */
+    body::after {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 90;
+      opacity: .04;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2"/></filter><rect width="160" height="160" filter="url(%23n)" opacity="0.6"/></svg>');
     }
 
-    /* --- Órbitas / anillos concéntricos decorativos (motivo de marca) --- */
-    .orbit-rings {
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(84, 97, 117, .35);
+    .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    .skip-link {
+      position: absolute; z-index: 200; top: 12px; left: 12px;
+      background: var(--orange); color: var(--black);
+      font-weight: 700; padding: 10px 18px; border-radius: 999px;
+      transform: translateY(-200%); transition: transform .2s var(--ease);
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    /* ============================================================
+       CAMPO DE ESTRELLAS — patrón repetible + twinkle
+       ============================================================ */
+    .stars { position: absolute; inset: 0; pointer-events: none; }
+    .stars::before, .stars::after {
+      content: ""; position: absolute; inset: 0;
+      background-repeat: repeat;
+    }
+    .stars::before {
+      background-image:
+        radial-gradient(1.4px 1.4px at 40px 60px,  rgba(255,255,255,.8), transparent 50%),
+        radial-gradient(1px 1px at 180px 120px,    rgba(255,255,255,.55), transparent 50%),
+        radial-gradient(1.6px 1.6px at 300px 220px,rgba(72,246,255,.7), transparent 50%),
+        radial-gradient(1px 1px at 420px 80px,     rgba(255,255,255,.45), transparent 50%),
+        radial-gradient(1.2px 1.2px at 520px 320px,rgba(255,255,255,.6), transparent 50%),
+        radial-gradient(1px 1px at 120px 420px,    rgba(255,255,255,.5), transparent 50%),
+        radial-gradient(1.4px 1.4px at 380px 480px,rgba(248,177,53,.55), transparent 50%);
+      background-size: 560px 560px;
+    }
+    .stars::after {
+      background-image:
+        radial-gradient(1px 1px at 90px 200px,     rgba(255,255,255,.7), transparent 50%),
+        radial-gradient(1.5px 1.5px at 260px 360px,rgba(72,246,255,.6), transparent 50%),
+        radial-gradient(1px 1px at 480px 150px,    rgba(255,255,255,.5), transparent 50%),
+        radial-gradient(1.2px 1.2px at 600px 420px,rgba(255,255,255,.6), transparent 50%);
+      background-size: 700px 700px;
+      animation: twinkle 7s ease-in-out infinite;
+    }
+    @keyframes twinkle { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+
+    /* ============================================================
+       ÓRBITAS — anillos concéntricos (motivo de marca, pág. 4–5)
+       ============================================================ */
+    .ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(84,97,117,.35);
       pointer-events: none;
     }
 
-    /* --- Máscara con forma de isotipo (estrella de 4 puntas) sobre foto --- */
-    .star-clip { clip-path: url(#argSpaceStarClip); -webkit-clip-path: url(#argSpaceStarClip); }
+    /* ============================================================
+       BARRA DE PROGRESO DE SCROLL
+       ============================================================ */
+    .progress {
+      position: fixed; top: 0; left: 0; right: 0; height: 3px;
+      z-index: 120; pointer-events: none;
+      background: linear-gradient(90deg, var(--cyan), var(--orange));
+      transform-origin: left;
+      transform: scaleX(0);
+    }
 
-    /* --- Animación de reveal al hacer scroll (IntersectionObserver) --- */
-    .reveal {
+    /* ============================================================
+       NAVBAR
+       ============================================================ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      transition: background .35s var(--ease), border-color .35s var(--ease), backdrop-filter .35s var(--ease);
+      border-bottom: 1px solid transparent;
+    }
+    .nav.is-scrolled {
+      background: rgba(0,13,33,.82);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      border-bottom-color: var(--w-08);
+    }
+    .nav__inner {
+      max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter);
+      height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .nav__logo img { height: 36px; width: auto; }
+    .nav__links { display: none; align-items: center; gap: 28px; }
+    @media (min-width: 1024px) { .nav__links { display: flex; } }
+
+    .nav__link {
+      position: relative;
+      font-size: 13.5px; font-weight: 500;
+      color: var(--w-75); text-decoration: none;
+      padding: 6px 2px;
+      letter-spacing: .02em;
+      transition: color .25s var(--ease);
+    }
+    .nav__link::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+      height: 2px; background: var(--cyan); border-radius: 2px;
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .3s var(--ease);
+    }
+    .nav__link:hover { color: #fff; }
+    .nav__link:hover::after, .nav__link.is-active::after { transform: scaleX(1); }
+    .nav__link.is-active { color: var(--cyan); }
+
+    .nav__actions { display: flex; align-items: center; gap: 14px; }
+
+    /* Hamburguesa que muta a X */
+    .nav__burger {
+      display: inline-flex; flex-direction: column; justify-content: center; gap: 6px;
+      width: 44px; height: 44px; padding: 10px;
+      background: none; border: 1px solid var(--w-12); border-radius: 12px;
+      cursor: pointer;
+    }
+    @media (min-width: 1024px) { .nav__burger { display: none; } }
+    .nav__burger span {
+      display: block; height: 2px; width: 100%;
+      background: #fff; border-radius: 2px;
+      transition: transform .3s var(--ease), opacity .2s var(--ease);
+    }
+    .nav__burger.is-open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .nav__burger.is-open span:nth-child(2) { opacity: 0; }
+    .nav__burger.is-open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    /* Menú mobile a pantalla completa */
+    .menu {
+      position: fixed; inset: 0; z-index: 95;
+      background: rgba(0,13,33,.96);
+      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: calc(var(--nav-h) + 24px) var(--gutter) 48px;
+      opacity: 0; visibility: hidden;
+      transition: opacity .35s var(--ease), visibility 0s .35s;
+    }
+    .menu.is-open { opacity: 1; visibility: visible; transition: opacity .35s var(--ease); }
+    .menu__link {
+      display: flex; align-items: baseline; gap: 16px;
+      font-family: var(--font-display); font-size: clamp(20px, 6vw, 30px);
+      color: #fff; text-decoration: none;
+      padding: 14px 0; border-bottom: 1px solid var(--w-08);
+      opacity: 0; transform: translateY(18px);
+      transition: opacity .4s var(--ease), transform .4s var(--ease), color .25s;
+    }
+    .menu.is-open .menu__link { opacity: 1; transform: translateY(0); transition-delay: calc(var(--i) * 60ms); }
+    .menu__link:hover { color: var(--cyan); }
+    .menu__num { font-size: 12px; color: var(--cyan); letter-spacing: .2em; }
+    .menu__cta { margin-top: 32px; opacity: 0; transform: translateY(18px); transition: opacity .4s var(--ease) .45s, transform .4s var(--ease) .45s; }
+    .menu.is-open .menu__cta { opacity: 1; transform: translateY(0); }
+
+    /* ============================================================
+       BOTONES
+       ============================================================ */
+    .btn {
+      position: relative; overflow: hidden;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      font-family: var(--font-body); font-weight: 700; font-size: 14.5px;
+      letter-spacing: .04em; text-decoration: none;
+      padding: 15px 30px; border-radius: 999px;
+      transition: transform .25s var(--ease-spring), box-shadow .25s var(--ease), background .25s var(--ease), color .25s var(--ease);
+      will-change: transform;
+    }
+    .btn .icon { transition: transform .25s var(--ease); }
+    .btn:hover .icon { transform: translateX(4px); }
+
+    .btn--primary { background: var(--orange); color: var(--black); }
+    .btn--primary::before {
+      content: ""; position: absolute; top: 0; bottom: 0; left: -80%;
+      width: 50%; transform: skewX(-22deg);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
+      transition: left .55s var(--ease);
+    }
+    .btn--primary:hover { transform: translateY(-2px); box-shadow: 0 14px 36px -10px rgba(248,177,53,.55); }
+    .btn--primary:hover::before { left: 130%; }
+
+    .btn--ghost { border: 2px solid var(--cyan); color: var(--cyan); padding: 13px 28px; }
+    .btn--ghost:hover {
+      transform: translateY(-2px);
+      background: rgba(72,246,255,.1);
+      box-shadow: 0 14px 36px -14px rgba(72,246,255,.45);
+    }
+
+    /* Botón circular con flecha — recurso de marca (pág. 11) */
+    .btn-circle {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 52px; height: 52px; border-radius: 50%;
+      border: 1.5px solid var(--w-12); color: #fff;
+      background: rgba(255,255,255,.04);
+      cursor: pointer; text-decoration: none;
+      transition: border-color .25s, color .25s, transform .25s var(--ease-spring), background .25s;
+    }
+    .btn-circle:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-3px); }
+
+    /* ============================================================
+       ÍCONOS
+       ============================================================ */
+    .icon { width: 20px; height: 20px; flex: none; }
+    .icon--sm { width: 16px; height: 16px; }
+    .icon--lg { width: 26px; height: 26px; }
+
+    /* ============================================================
+       ENCABEZADO DE SECCIÓN — número estilo brandbook
+       ("0" como chip de contorno redondeado, Michroma)
+       ============================================================ */
+    .sec-head { margin-bottom: clamp(40px, 6vw, 64px); }
+    .sec-head__meta { display: flex; align-items: center; gap: 18px; margin-bottom: 26px; }
+    .sec-num { font-family: var(--font-display); font-size: clamp(24px, 3vw, 32px); line-height: 1; display: inline-flex; align-items: center; gap: 3px; }
+    .sec-num__zero {
+      border: 2px solid var(--cyan); color: var(--cyan);
+      border-radius: 10px; padding: 1px 7px 3px;
+    }
+    .sec-head--orange .sec-num__zero { border-color: var(--orange); color: var(--orange); }
+    .sec-head__line { height: 1px; width: clamp(48px, 9vw, 110px); background: linear-gradient(90deg, var(--cyan), transparent); }
+    .sec-head--orange .sec-head__line { background: linear-gradient(90deg, var(--orange), transparent); }
+    .sec-head__tag {
+      font-family: var(--font-alt); font-size: 12.5px;
+      letter-spacing: .32em; text-transform: uppercase;
+      color: var(--cyan);
+    }
+    .sec-head--orange .sec-head__tag { color: var(--orange); }
+    .sec-head__title {
+      font-family: var(--font-display); font-weight: 400;
+      font-size: clamp(24px, 3.6vw, 40px); line-height: 1.32;
+      max-width: 21ch;
+    }
+    .sec-head__lede { margin-top: 18px; color: var(--w-60); max-width: 56ch; }
+
+    /* ============================================================
+       REVEALS — entrada al hacer scroll
+       ============================================================ */
+    [data-reveal] {
       opacity: 0;
-      transform: translateY(28px);
-      transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);
+      transform: translateY(30px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+      transition-delay: var(--d, 0s);
       will-change: opacity, transform;
     }
-    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    [data-reveal="left"]  { transform: translateX(-40px); }
+    [data-reveal="right"] { transform: translateX(40px); }
+    [data-reveal="zoom"]  { transform: scale(.94); }
+    [data-reveal].is-in { opacity: 1; transform: none; }
 
-    /* --- Twinkle suave del isotipo de fondo del hero --- */
-    @keyframes float-slow {
-      0%,100% { transform: translateY(0) rotate(0deg); }
-      50%     { transform: translateY(-14px) rotate(2deg); }
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero {
+      position: relative; min-height: 100svh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding-top: calc(var(--nav-h) + 36px); padding-bottom: 90px;
+      overflow: hidden;
     }
-    .float-slow { animation: float-slow 9s ease-in-out infinite; }
+    .hero__bg { position: absolute; inset: 0; z-index: -3; }
+    .hero__bg img { width: 100%; height: 100%; object-fit: cover; object-position: bottom; opacity: .55; }
+    .hero__bg::after {
+      content: ""; position: absolute; inset: 0;
+      background:
+        radial-gradient(120% 90% at 75% 110%, rgba(0,38,84,.25), transparent 60%),
+        linear-gradient(180deg, var(--black) 0%, rgba(0,13,33,.55) 45%, rgba(0,38,84,.65) 100%);
+    }
+    .hero .stars { z-index: -2; }
 
-    @keyframes spin-slow { to { transform: rotate(360deg); } }
-    .spin-slow { animation: spin-slow 60s linear infinite; }
+    .hero__grid {
+      display: grid; gap: 48px; align-items: center;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 1024px) { .hero__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
 
-    /* Respeto de reduce-motion (accesibilidad) */
+    .hero__kicker {
+      display: inline-flex; align-items: center; gap: 14px;
+      font-family: var(--font-alt); font-size: 13px;
+      letter-spacing: .38em; text-transform: uppercase;
+      color: var(--cyan); margin-bottom: 26px;
+    }
+    .hero__kicker::before { content: ""; width: 42px; height: 1px; background: var(--cyan); }
+
+    .hero__title {
+      font-family: var(--font-display); font-weight: 400;
+      line-height: 1.14; margin-bottom: 24px;
+    }
+    .hero__title .line { display: block; overflow: hidden; }
+    .hero__title .line > span { display: inline-block; }
+    .hero__title-sm { font-size: clamp(22px, 3.6vw, 38px); color: #fff; }
+    .hero__title-lg {
+      font-size: clamp(34px, 6.4vw, 68px);
+      color: var(--orange);
+      display: inline-flex; align-items: center; gap: .35em;
+    }
+    .hero__title-lg .icon { width: .62em; height: .62em; }
+
+    .hero__lede { font-size: clamp(15px, 1.6vw, 18px); color: var(--w-75); max-width: 52ch; margin-bottom: 30px; }
+
+    .hero__pills { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 38px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 9px;
+      border: 1px solid var(--w-12); border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+      padding: 9px 17px; font-size: 13.5px; color: var(--w-75);
+    }
+    .pill strong { color: #fff; font-weight: 600; }
+    .pill .icon { width: 15px; height: 15px; }
+    .pill--cyan .icon { color: var(--cyan); }
+    .pill--orange .icon { color: var(--orange); }
+
+    .hero__ctas { display: flex; flex-wrap: wrap; gap: 16px; }
+
+    /* Animación de arranque del hero (stagger en cascada) */
+    @keyframes boot-up { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+    .boot [data-boot] { opacity: 0; animation: boot-up .9s var(--ease) forwards; animation-delay: calc(var(--b) * 120ms + 150ms); }
+
+    /* --- Cuenta regresiva estilo HUD --- */
+    .count { margin-bottom: 38px; }
+    .count__label {
+      font-family: var(--font-alt); font-size: 11.5px;
+      letter-spacing: .28em; text-transform: uppercase;
+      color: var(--w-45); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .count__label .icon { width: 14px; height: 14px; color: var(--orange); }
+    .count__cells { display: flex; align-items: center; gap: clamp(8px, 1.6vw, 14px); }
+    .cell {
+      position: relative;
+      width: clamp(68px, 9vw, 92px); height: clamp(76px, 10vw, 96px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+      background: rgba(0,38,84,.5);
+      border: 1px solid var(--w-08); border-radius: 14px;
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    }
+    /* Esquinas HUD */
+    .cell::before, .cell::after {
+      content: ""; position: absolute; width: 14px; height: 14px;
+      border-color: rgba(72,246,255,.55); border-style: solid;
+    }
+    .cell::before { top: -1px; left: -1px; border-width: 1.5px 0 0 1.5px; border-radius: 14px 0 0 0; }
+    .cell::after  { bottom: -1px; right: -1px; border-width: 0 1.5px 1.5px 0; border-radius: 0 0 14px 0; }
+    .cell__value {
+      font-family: var(--font-display); font-size: clamp(22px, 3vw, 30px);
+      color: var(--cyan); line-height: 1;
+      transition: transform .3s var(--ease-spring);
+    }
+    .cell__value.tick { animation: cell-tick .45s var(--ease); }
+    @keyframes cell-tick {
+      0% { transform: translateY(-55%); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .cell__unit { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--w-45); }
+    .count__sep { font-family: var(--font-display); color: rgba(72,246,255,.4); font-size: 20px; animation: blink 2s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: .25; } }
+
+    /* --- Diagrama orbital (pág. 5: Macro / Meso / Micro) --- */
+    .orbital { position: relative; width: min(420px, 80vw); aspect-ratio: 1; margin-inline: auto; display: none; }
+    @media (min-width: 1024px) { .orbital { display: block; } }
+    .orbital__ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(84,97,117,.5);
+    }
+    .orbital__ring--1 { inset: 0; animation: orbit 46s linear infinite; }
+    .orbital__ring--2 { inset: 13.5%; border-color: rgba(84,97,117,.65); animation: orbit 30s linear infinite reverse; }
+    .orbital__ring--3 { inset: 28%; border-style: dashed; border-color: rgba(72,246,255,.28); animation: orbit 60s linear infinite; }
+    @keyframes orbit { to { transform: rotate(360deg); } }
+    .orbital__dot {
+      position: absolute; width: 9px; height: 9px; border-radius: 50%;
+      background: var(--cyan); box-shadow: 0 0 14px rgba(72,246,255,.9);
+      top: -5px; left: 50%; margin-left: -4.5px;
+    }
+    .orbital__dot--b { top: auto; left: auto; bottom: 12%; right: 4%; }
+    .orbital__core {
+      position: absolute; inset: 0; display: grid; place-items: center;
+    }
+    .orbital__core img { width: 30%; filter: drop-shadow(0 0 28px rgba(248,177,53,.45)); animation: core-pulse 5s ease-in-out infinite; }
+    @keyframes core-pulse {
+      0%,100% { transform: scale(1); filter: drop-shadow(0 0 22px rgba(248,177,53,.35)); }
+      50% { transform: scale(1.05); filter: drop-shadow(0 0 40px rgba(248,177,53,.6)); }
+    }
+    .orbital__legend {
+      position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 18px; white-space: nowrap;
+      font-family: var(--font-alt); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--w-45);
+    }
+    .orbital__legend span { display: inline-flex; align-items: center; gap: 7px; }
+    .lg-ring { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid var(--steel); }
+    .lg-dot  { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); }
+    .lg-star { width: 12px; height: 12px; color: var(--orange); }
+
+    /* --- Indicador de scroll "DESLIZÁ" (micro-copy del manual, pág. 11) --- */
+    .hero__scroll {
+      position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      font-family: var(--font-display); font-size: 10px; letter-spacing: .42em;
+      color: var(--w-45); text-decoration: none;
+      transition: color .25s;
+    }
+    .hero__scroll:hover { color: var(--cyan); }
+    .hero__scroll-line { width: 1px; height: 40px; overflow: hidden; position: relative; background: var(--w-12); }
+    .hero__scroll-line::after {
+      content: ""; position: absolute; left: 0; top: -40%;
+      width: 100%; height: 40%;
+      background: var(--cyan);
+      animation: scroll-drip 2s var(--ease) infinite;
+    }
+    @keyframes scroll-drip { 0% { top: -40%; } 70%, 100% { top: 110%; } }
+
+    /* ============================================================
+       MARQUEE — divisor de marca
+       ============================================================ */
+    .marquee {
+      position: relative; overflow: hidden;
+      border-block: 1px solid var(--w-08);
+      background: rgba(0,38,84,.3);
+      padding: 18px 0;
+    }
+    .marquee__track {
+      display: flex; gap: 56px; width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    .marquee:hover .marquee__track { animation-play-state: paused; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    .marquee__group { display: flex; align-items: center; gap: 56px; padding-right: 56px; }
+    .marquee__item {
+      font-family: var(--font-display); font-size: 15px; letter-spacing: .3em;
+      color: var(--w-45); white-space: nowrap;
+    }
+    .marquee__item--ghost {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(72,246,255,.4);
+    }
+    .marquee .icon { width: 14px; height: 14px; color: var(--orange); }
+
+    /* ============================================================
+       SECCIONES — fondos
+       ============================================================ */
+    .sec { position: relative; padding-block: var(--sec-pad); overflow: hidden; }
+    .sec--navy  { background: linear-gradient(180deg, var(--black) 0%, var(--navy) 18%, var(--navy) 82%, var(--black) 100%); }
+    .sec--black { background: var(--black); }
+
+    /* ============================================================
+       01 · HISTORIA
+       ============================================================ */
+    .historia__grid { display: grid; gap: clamp(40px, 6vw, 72px); align-items: start; }
+    @media (min-width: 1024px) { .historia__grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); } }
+
+    .prose p { color: var(--w-75); margin-bottom: 18px; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: #fff; font-weight: 600; }
+    .prose .hl-cyan { color: var(--cyan); font-weight: 600; }
+    .prose .hl-orange { color: var(--orange); font-weight: 600; }
+    .prose em { color: #fff; }
+
+    /* --- Figura con máscara de isotipo (Patrón B del manual, págs. 8–9):
+           capa base oscurecida + capa luminosa recortada por la estrella --- */
+    .star-figure { position: sticky; top: calc(var(--nav-h) + 32px); }
+    .star-figure__frame {
+      position: relative; aspect-ratio: 1; max-width: 470px; margin-inline: auto;
+      border-radius: var(--r-md); overflow: hidden;
+    }
+    .star-figure__photo {
+      display: block; width: 100%; height: 100%; object-fit: cover;
+      transition: transform .7s var(--ease);
+    }
+    .star-figure:hover .star-figure__photo { transform: scale(1.045); }
+    .star-figure__label {
+      position: absolute; top: 18px; left: 18px; z-index: 4;
+      font-family: var(--font-display); font-size: 10.5px; letter-spacing: .3em;
+      text-transform: uppercase; color: #fff;
+      background: rgba(0,13,33,.55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+      border: 1px solid var(--w-12);
+      padding: 8px 14px; border-radius: 999px;
+    }
+    .star-figure figcaption {
+      margin-top: 18px; text-align: center;
+      font-family: var(--font-alt); font-size: 11.5px; letter-spacing: .26em;
+      text-transform: uppercase; color: var(--w-45);
+    }
+
+    /* --- Ficha técnica de la misión (datos en cian, regla de paleta) --- */
+    .stats {
+      margin-top: clamp(56px, 8vw, 88px);
+      display: grid; gap: 14px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: 768px) { .stats { grid-template-columns: repeat(5, 1fr); } }
+    .stat {
+      position: relative;
+      border: 1px solid var(--w-08); border-radius: var(--r-sm);
+      background: rgba(0,13,33,.45);
+      padding: 22px 18px 18px; text-align: center;
+      transition: border-color .3s, transform .3s var(--ease);
+    }
+    .stat:hover { border-color: rgba(72,246,255,.4); transform: translateY(-3px); }
+    .stat__value { font-family: var(--font-display); font-size: clamp(20px, 2.4vw, 27px); color: var(--cyan); line-height: 1.1; }
+    .stat__value sup { font-size: .5em; }
+    .stat__label { margin-top: 8px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--w-45); }
+    .stat--orange .stat__value { color: var(--orange); }
+
+    /* --- Línea de tiempo de la misión --- */
+    .tl-title {
+      font-family: var(--font-alt); font-size: 13px; letter-spacing: .26em;
+      text-transform: uppercase; color: var(--w-45);
+      margin: clamp(56px, 8vw, 88px) 0 40px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .tl-title::after { content: ""; flex: 1; height: 1px; background: var(--w-08); }
+
+    .timeline { position: relative; display: grid; gap: 0; }
+    .timeline::before {
+      content: ""; position: absolute; top: 6px; bottom: 6px; left: 17px;
+      width: 2px; border-radius: 2px;
+      background: var(--iso-gradient);
+      opacity: .8;
+    }
+    .tl-item { position: relative; padding: 0 0 34px 58px; }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-item__marker {
+      position: absolute; left: 0; top: 0;
+      width: 36px; height: 36px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: var(--black);
+      border: 1.5px solid rgba(72,246,255,.5);
+      color: var(--cyan);
+    }
+    .tl-item--orange .tl-item__marker { border-color: rgba(248,177,53,.6); color: var(--orange); }
+    .tl-item__marker .icon { width: 15px; height: 15px; }
+    .tl-item__time {
+      font-family: var(--font-alt); font-size: 11px; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 5px;
+    }
+    .tl-item--orange .tl-item__time { color: var(--orange); }
+    .tl-item__name { font-family: var(--font-display); font-size: 15.5px; margin-bottom: 7px; }
+    .tl-item__text { font-size: 14.5px; color: var(--w-60); max-width: 60ch; }
+
+    @media (min-width: 900px) {
+      .timeline { grid-template-columns: repeat(3, 1fr); gap: 0 26px; }
+      .timeline::before { top: 17px; bottom: auto; left: 6px; right: 6px; width: auto; height: 2px; }
+      .tl-item { padding: 60px 6px 0 0; }
+      .tl-item__marker { top: 0; left: 0; }
+      .timeline .tl-item:nth-child(n+4) { margin-top: 44px; }
+    }
+
+    /* --- Panel "¿Por qué es importante?" --- */
+    .why {
+      position: relative; overflow: hidden;
+      margin-top: clamp(56px, 8vw, 80px);
+      border: 1px solid rgba(72,246,255,.22);
+      border-radius: var(--r-lg);
+      background:
+        radial-gradient(80% 120% at 100% 100%, rgba(0,38,84,.7), transparent 65%),
+        rgba(0,13,33,.55);
+      padding: clamp(30px, 5vw, 52px);
+    }
+    .why__star { position: absolute; right: -36px; bottom: -36px; width: 190px; opacity: .12; pointer-events: none; }
+    .why h3 {
+      font-family: var(--font-display); font-weight: 400;
+      font-size: clamp(18px, 2.4vw, 24px); color: var(--cyan); margin-bottom: 16px;
+    }
+    .why p { color: var(--w-75); max-width: 64ch; }
+
+    /* ============================================================
+       02 · EL DESAFÍO — media partida (Patrón C)
+       ============================================================ */
+    .desafio { background: linear-gradient(180deg, var(--black), #0a1830 30%, #13203a 70%, var(--black)); }
+    .desafio__arcs {
+      position: absolute; left: -16%; bottom: -42%;
+      width: 760px; aspect-ratio: 1; opacity: .5; pointer-events: none;
+    }
+    .desafio__arcs span { position: absolute; border-radius: 50%; border: 1px solid rgba(84,97,117,.4); }
+    .desafio__arcs span:nth-child(1) { inset: 0; }
+    .desafio__arcs span:nth-child(2) { inset: 12%; }
+    .desafio__arcs span:nth-child(3) { inset: 24%; border-style: dashed; border-color: rgba(72,246,255,.18); }
+
+    .desafio__grid { display: grid; gap: clamp(36px, 6vw, 64px); align-items: center; }
+    @media (min-width: 1024px) { .desafio__grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); } }
+
+    .desafio__quote {
+      margin-top: 26px;
+      display: flex; align-items: flex-start; gap: 14px;
+      color: var(--cyan); font-weight: 600; font-size: 17px; line-height: 1.55;
+    }
+    .desafio__quote .icon { margin-top: 4px; color: var(--orange); }
+
+    .tip {
+      position: relative; overflow: hidden;
+      border: 1px solid var(--w-08); border-radius: var(--r-md);
+      background: rgba(0,13,33,.6);
+      padding: 26px 26px 24px;
+      transition: border-color .3s, transform .3s var(--ease);
+    }
+    .tip + .tip { margin-top: 18px; }
+    .tip:hover { transform: translateX(6px); }
+    .tip--cyan:hover { border-color: rgba(72,246,255,.45); }
+    .tip--orange:hover { border-color: rgba(248,177,53,.5); }
+    .tip__head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .tip__head .icon { color: var(--cyan); }
+    .tip--orange .tip__head .icon { color: var(--orange); }
+    .tip__head h3 { font-family: var(--font-display); font-weight: 400; font-size: 14px; letter-spacing: .06em; }
+    .tip--cyan h3 { color: var(--cyan); }
+    .tip--orange h3 { color: var(--orange); }
+    .tip p { font-size: 14.5px; color: var(--w-75); }
+    .tip__edge { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+    .tip--cyan .tip__edge { background: var(--cyan); }
+    .tip--orange .tip__edge { background: var(--orange); }
+
+    /* ============================================================
+       03 · CATEGORÍAS
+       ============================================================ */
+    .cats { display: grid; gap: 26px; }
+    @media (min-width: 820px) { .cats { grid-template-columns: 1fr 1fr; } }
+
+    .cat {
+      position: relative; overflow: hidden; isolation: isolate;
+      border-radius: var(--r-lg);
+      border: 1px solid var(--w-08);
+      background: linear-gradient(160deg, rgba(0,38,84,.55), rgba(0,13,33,.85));
+      padding: clamp(28px, 4vw, 44px);
+      transition: transform .35s var(--ease), border-color .35s, box-shadow .35s;
+    }
+    .cat:hover { transform: translateY(-7px); }
+    .cat--cyan:hover { border-color: rgba(72,246,255,.5); box-shadow: 0 24px 60px -28px rgba(72,246,255,.35); }
+    .cat--orange:hover { border-color: rgba(248,177,53,.55); box-shadow: 0 24px 60px -28px rgba(248,177,53,.4); }
+
+    .cat__watermark {
+      position: absolute; right: -34px; top: -34px; z-index: -1;
+      width: 160px; opacity: .12;
+      transition: transform .6s var(--ease), opacity .4s;
+    }
+    .cat:hover .cat__watermark { transform: rotate(18deg) scale(1.12); opacity: .2; }
+
+    .cat__tag {
+      display: inline-flex; align-items: center; gap: 9px;
+      font-family: var(--font-alt); font-size: 11.5px; letter-spacing: .26em;
+      text-transform: uppercase; margin-bottom: 22px;
+      padding: 7px 14px; border-radius: 999px; border: 1px solid;
+    }
+    .cat--cyan .cat__tag { color: var(--cyan); border-color: rgba(72,246,255,.35); }
+    .cat--orange .cat__tag { color: var(--orange); border-color: rgba(248,177,53,.4); }
+
+    .cat__name { font-family: var(--font-display); font-weight: 400; font-size: clamp(24px, 3vw, 32px); margin-bottom: 4px; }
+    .cat__age { font-family: var(--font-alt); font-size: 16px; font-weight: 600; margin-bottom: 18px; }
+    .cat--cyan .cat__age { color: var(--cyan); }
+    .cat--orange .cat__age { color: var(--orange); }
+    .cat__desc { color: var(--w-75); font-size: 15px; margin-bottom: 24px; }
+    .cat__meta {
+      display: flex; flex-wrap: wrap; gap: 16px;
+      border-top: 1px solid var(--w-08); padding-top: 18px;
+      font-size: 13px; color: var(--w-60);
+    }
+    .cat__meta span { display: inline-flex; align-items: center; gap: 7px; }
+    .cat__meta .icon { width: 14px; height: 14px; }
+    .cat--cyan .cat__meta .icon { color: var(--cyan); }
+    .cat--orange .cat__meta .icon { color: var(--orange); }
+
+    /* ============================================================
+       04 · PREMIOS
+       ============================================================ */
+    .prize-hero {
+      position: relative; overflow: hidden;
+      display: grid; gap: 32px; align-items: center;
+      border: 1.5px solid rgba(248,177,53,.4);
+      border-radius: var(--r-lg);
+      background:
+        radial-gradient(90% 130% at 100% 0%, rgba(27,69,159,.35), transparent 60%),
+        linear-gradient(150deg, var(--navy), var(--black) 72%);
+      padding: clamp(30px, 5vw, 56px);
+      margin-bottom: 30px;
+    }
+    @media (min-width: 900px) { .prize-hero { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); } }
+    .prize-hero__badge {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: var(--orange); color: var(--black);
+      font-weight: 700; font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase;
+      padding: 8px 16px; border-radius: 999px; margin-bottom: 22px;
+    }
+    .prize-hero__badge .icon { width: 14px; height: 14px; }
+    .prize-hero h3 { font-family: var(--font-display); font-weight: 400; font-size: clamp(24px, 3.6vw, 38px); margin-bottom: 16px; max-width: 16ch; }
+    .prize-hero p { color: var(--w-75); max-width: 54ch; }
+    .prize-hero__note { margin-top: 20px; display: inline-flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--cyan); }
+    .prize-hero__note .icon { width: 15px; height: 15px; }
+
+    .prize-hero__art { display: grid; place-items: center; }
+    .prize-hero__art svg { width: min(280px, 70vw); height: auto; filter: drop-shadow(0 22px 50px rgba(0,0,0,.5)); }
+    .prize-hero__art .tablet-star { animation: core-pulse 5s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+
+    .prizes { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 640px) { .prizes { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .prizes { grid-template-columns: repeat(3, 1fr); } }
+    .prize {
+      border: 1px solid var(--w-08); border-radius: var(--r-md);
+      background: rgba(0,38,84,.3);
+      padding: 26px;
+      transition: border-color .3s, transform .3s var(--ease);
+    }
+    .prize:hover { border-color: rgba(72,246,255,.4); transform: translateY(-4px); }
+    .prize__icon {
+      width: 46px; height: 46px; border-radius: 13px;
+      display: grid; place-items: center; margin-bottom: 18px;
+      background: rgba(72,246,255,.1); color: var(--cyan);
+      border: 1px solid rgba(72,246,255,.25);
+    }
+    .prize h4 { font-family: var(--font-display); font-weight: 400; font-size: 14px; color: var(--cyan); margin-bottom: 8px; }
+    .prize p { font-size: 13.5px; color: var(--w-60); }
+    .prize--todo {
+      border-style: dashed; border-color: rgba(255,255,255,.18);
+      background: transparent;
+      display: grid; place-items: center; text-align: center; min-height: 150px;
+    }
+    .todo-tag { color: var(--orange); font-weight: 600; font-size: 13.5px; }
+
+    /* ============================================================
+       05 · CÓMO PARTICIPAR
+       ============================================================ */
+    .steps { display: grid; gap: 18px; counter-reset: step; margin-bottom: clamp(56px, 8vw, 84px); }
+    @media (min-width: 700px) { .steps { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1100px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+    .step {
+      position: relative;
+      border: 1px solid var(--w-08); border-radius: var(--r-md);
+      background: rgba(0,38,84,.35);
+      padding: 28px 24px 26px;
+      transition: border-color .3s, transform .3s var(--ease);
+    }
+    .step:hover { border-color: rgba(72,246,255,.4); transform: translateY(-4px); }
+    .step--final:hover { border-color: rgba(248,177,53,.5); }
+    .step__top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .step__num {
+      width: 46px; height: 46px; border-radius: 50%;
+      display: grid; place-items: center;
+      font-family: var(--font-display); font-size: 18px; color: var(--cyan);
+      border: 1.5px solid rgba(72,246,255,.45);
+    }
+    .step--final .step__num { color: var(--orange); border-color: rgba(248,177,53,.5); }
+    .step__top .icon { color: var(--w-45); width: 22px; height: 22px; }
+    .step h3 { font-family: var(--font-display); font-weight: 400; font-size: 14.5px; margin-bottom: 10px; }
+    .step p { font-size: 14px; color: var(--w-60); }
+    .step a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+    .step a:hover { color: var(--orange); }
+    /* Conector entre pasos (solo desktop) */
+    @media (min-width: 1100px) {
+      .step:not(:last-child)::after {
+        content: ""; position: absolute; top: 50px; right: -19px;
+        width: 20px; height: 1px;
+        background: repeating-linear-gradient(90deg, rgba(72,246,255,.5) 0 4px, transparent 4px 8px);
+      }
+    }
+
+    .dates { display: grid; gap: 20px; }
+    @media (min-width: 800px) { .dates { grid-template-columns: 1fr 1fr; } }
+    .date-card {
+      position: relative; overflow: hidden;
+      border-radius: var(--r-md); padding: 30px;
+      border: 1px solid;
+    }
+    .date-card--open { border-color: rgba(72,246,255,.35); background: linear-gradient(150deg, rgba(72,246,255,.07), rgba(0,38,84,.5)); }
+    .date-card--close { border-color: rgba(248,177,53,.45); background: linear-gradient(150deg, rgba(248,177,53,.08), rgba(0,38,84,.5)); }
+    .date-card__tag {
+      display: inline-flex; align-items: center; gap: 9px;
+      font-family: var(--font-alt); font-size: 11.5px; letter-spacing: .24em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .date-card--open .date-card__tag { color: var(--cyan); }
+    .date-card--close .date-card__tag { color: var(--orange); }
+    .date-card__date { font-family: var(--font-display); font-size: clamp(17px, 2.2vw, 21px); line-height: 1.45; }
+    .date-card__note { margin-top: 14px; font-size: 13.5px; color: var(--w-60); display: flex; gap: 9px; align-items: flex-start; }
+    .date-card__note .icon { width: 15px; height: 15px; margin-top: 3px; color: var(--orange); flex: none; }
+    .date-card__note strong { color: #fff; }
+    .date-card__watermark { position: absolute; right: -22px; bottom: -22px; width: 110px; opacity: .1; pointer-events: none; }
+
+    .participar__ctas { margin-top: 44px; display: flex; flex-wrap: wrap; gap: 16px; }
+
+    /* ============================================================
+       06 · SPONSORS
+       ============================================================ */
+    .sponsors { display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 720px) { .sponsors { grid-template-columns: repeat(4, 1fr); } }
+    .sponsor {
+      display: grid; place-items: center; min-height: 110px;
+      border: 1px dashed rgba(255,255,255,.16); border-radius: var(--r-md);
+      background: rgba(255,255,255,.03);
+      font-family: var(--font-alt); font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--w-45); text-align: center; padding: 14px;
+      transition: border-color .3s, color .3s, background .3s, transform .3s var(--ease);
+    }
+    .sponsor:hover { border-color: rgba(72,246,255,.45); color: var(--cyan); background: rgba(72,246,255,.05); transform: translateY(-3px); }
+    .sponsors__note { margin-top: 28px; font-size: 14px; color: var(--w-60); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .sponsors__note .icon { color: var(--orange); }
+    .sponsors__note a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+    .sponsors__note a:hover { color: var(--orange); }
+
+    /* ============================================================
+       07 · BASES — acordeón
+       ============================================================ */
+    .bases-wrap { max-width: 860px; }
+    .bases-note { font-size: 13.5px; color: var(--w-45); font-style: italic; margin-bottom: 36px; max-width: 64ch; }
+    .bases-note .todo-tag { font-style: normal; }
+
+    .acc { display: grid; gap: 12px; }
+    .acc details {
+      border: 1px solid var(--w-08); border-radius: var(--r-md);
+      background: rgba(0,13,33,.5);
+      overflow: hidden;
+      transition: border-color .3s;
+    }
+    .acc details[open] { border-color: rgba(72,246,255,.35); }
+    .acc summary {
+      display: flex; align-items: center; gap: 18px;
+      list-style: none; cursor: pointer;
+      padding: 20px 24px;
+      transition: background .25s;
+    }
+    .acc summary::-webkit-details-marker { display: none; }
+    .acc summary:hover { background: rgba(255,255,255,.04); }
+    .acc__num {
+      font-family: var(--font-alt); font-size: 12px; letter-spacing: .12em;
+      color: var(--cyan); min-width: 34px;
+    }
+    .acc__title { font-family: var(--font-display); font-size: 14px; flex: 1; }
+    .acc__chev {
+      width: 30px; height: 30px; border-radius: 50%; flex: none;
+      display: grid; place-items: center;
+      border: 1px solid rgba(72,246,255,.35); color: var(--cyan);
+      transition: transform .35s var(--ease), background .25s;
+    }
+    .acc details[open] .acc__chev { transform: rotate(45deg); background: rgba(72,246,255,.12); }
+    .acc__chev .icon { width: 14px; height: 14px; }
+    .acc__body { padding: 0 24px 22px 76px; font-size: 14.5px; color: var(--w-75); }
+    .acc__body a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+    .acc__body a:hover { color: var(--orange); }
+    .acc__body strong { color: #fff; }
+
+    /* ============================================================
+       CTA FINAL
+       ============================================================ */
+    .cta-final { text-align: center; background: linear-gradient(180deg, var(--black), var(--navy) 55%, var(--black)); }
+    .cta-final__star { width: 64px; margin: 0 auto 30px; filter: drop-shadow(0 0 30px rgba(248,177,53,.4)); animation: core-pulse 5s ease-in-out infinite; }
+    .cta-final h2 {
+      font-family: var(--font-display); font-weight: 400;
+      font-size: clamp(26px, 4.4vw, 46px); line-height: 1.3;
+      max-width: 22ch; margin: 0 auto 18px;
+    }
+    .cta-final h2 .hl { color: var(--orange); }
+    .cta-final p { color: var(--w-60); max-width: 52ch; margin: 0 auto 38px; }
+    .cta-final__ctas { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer { position: relative; background: var(--black); border-top: 1px solid var(--w-08); overflow: hidden; }
+    .footer__grid {
+      display: grid; gap: 44px;
+      padding-block: clamp(56px, 8vw, 80px) 40px;
+    }
+    @media (min-width: 820px) { .footer__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 4fr); } }
+    .footer__brand img { height: 40px; width: auto; margin-bottom: 20px; }
+    .footer__brand p { font-size: 14px; color: var(--w-60); max-width: 34ch; }
+    .footer h3 {
+      font-family: var(--font-alt); font-size: 11.5px; letter-spacing: .26em;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 18px;
+    }
+    .footer__nav li + li { margin-top: 10px; }
+    .footer__nav a {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; color: var(--w-75); text-decoration: none;
+      transition: color .25s, transform .25s var(--ease);
+    }
+    .footer__nav a:hover { color: var(--cyan); transform: translateX(4px); }
+    .footer__nav .icon { width: 11px; height: 11px; color: var(--orange); }
+    .footer__mail {
+      display: inline-flex; align-items: center; gap: 9px;
+      font-size: 14px; color: var(--w-75); text-decoration: underline; text-underline-offset: 3px;
+      margin-bottom: 22px;
+    }
+    .footer__mail:hover { color: var(--cyan); }
+    .footer__social { display: flex; gap: 12px; }
+    .footer__social a {
+      width: 42px; height: 42px; border-radius: 50%;
+      display: grid; place-items: center;
+      border: 1px solid var(--w-12); color: var(--w-75);
+      transition: color .25s, border-color .25s, transform .25s var(--ease-spring);
+    }
+    .footer__social a:hover { color: var(--cyan); border-color: rgba(72,246,255,.5); transform: translateY(-3px); }
+    .footer__bottom {
+      border-top: 1px solid var(--w-08);
+      padding-block: 24px;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+      font-size: 12.5px; color: var(--w-45);
+    }
+
+    /* Volver arriba */
+    .to-top {
+      position: fixed; right: 22px; bottom: 22px; z-index: 80;
+      opacity: 0; visibility: hidden; transform: translateY(14px);
+      transition: opacity .3s var(--ease), transform .3s var(--ease), visibility 0s .3s;
+    }
+    .to-top.is-visible { opacity: 1; visibility: visible; transform: none; transition: opacity .3s var(--ease), transform .3s var(--ease); }
+    .to-top .btn-circle { background: rgba(0,13,33,.8); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+
+    /* ============================================================
+       REDUCE MOTION — accesibilidad
+       ============================================================ */
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .reveal { opacity: 1; transform: none; transition: none; }
-      .float-slow, .spin-slow { animation: none; }
-    }
-
-    /* Botón primario y secundario de marca */
-    .btn-primary {
-      background: var(--space-orange);
-      color: var(--space-black);
-      font-weight: 700;
-      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -8px rgba(248,177,53,.6); filter: brightness(1.05); }
-
-    .btn-secondary {
-      border: 2px solid var(--space-cyan);
-      color: var(--space-cyan);
-      font-weight: 600;
-      transition: transform .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease;
-    }
-    .btn-secondary:hover { transform: translateY(-2px); background: rgba(72,246,255,.12); box-shadow: 0 10px 30px -10px rgba(72,246,255,.5); }
-
-    /* "0" de número de sección estilizado como chip redondeado (regla del brandbook) */
-    .section-zero {
-      border: 2px solid var(--space-cyan);
-      border-radius: 10px;
-      padding: 0 .18em;
-      color: var(--space-cyan);
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      [data-reveal], .boot [data-boot] { opacity: 1 !important; transform: none !important; }
+      .marquee__track { animation: none; }
     }
   </style>
 </head>
 
-<body class="font-body antialiased selection:bg-space-cyan selection:text-space-black">
+<body>
 
   <!-- ============================================================
-       DEFINICIONES SVG GLOBALES — clipPath del isotipo (máscara estrella)
+       SVG GLOBAL — sprite de íconos + clipPath del isotipo
+       (path oficial del isotipo normalizado a 0..1 para clip responsive)
        ============================================================ -->
   <svg width="0" height="0" aria-hidden="true" style="position:absolute">
     <defs>
-      <!-- Path del isotipo normalizado a coordenadas 0..1 para clip responsive -->
-      <clipPath id="argSpaceStarClip" clipPathUnits="objectBoundingBox">
+      <clipPath id="starClip" clipPathUnits="objectBoundingBox">
         <path d="M0.5 0.0455 C0.5 0.2964 0.2964 0.5 0.0455 0.5 C0.2964 0.5 0.5 0.7036 0.5 0.9545 C0.5 0.7036 0.7036 0.5 0.9545 0.5 C0.7036 0.5 0.5 0.2964 0.5 0.0455 Z" />
       </clipPath>
+
+      <!-- Isotipo (relleno, path oficial) -->
+      <symbol id="i-star" viewBox="0 0 220 220">
+        <path d="M110 10 C110 65.2 65.2 110 10 110 C65.2 110 110 154.8 110 210 C110 154.8 154.8 110 210 110 C154.8 110 110 65.2 110 10 Z" fill="currentColor"/>
+      </symbol>
+
+      <!-- Set de íconos de trazo (24px, stroke 1.8, puntas redondeadas) -->
+      <symbol id="i-rocket" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></g></symbol>
+      <symbol id="i-palette" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 1 1 10-10c0 1.66-1.34 3-3 3h-2.16c-1.4 0-2.31 1.5-1.62 2.72.34.61.28 1.4-.21 1.9A3.4 3.4 0 0 1 12 22z"/><circle cx="7.5" cy="11.5" r=".7" fill="currentColor"/><circle cx="10.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="15.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="17.5" cy="11.5" r=".7" fill="currentColor"/></g></symbol>
+      <symbol id="i-brush" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 3.5 6 6L9 21l-6.5.5L3 15z"/><path d="m12 6 6 6"/></g></symbol>
+      <symbol id="i-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3 10h18"/></g></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g></symbol>
+      <symbol id="i-trophy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v6a5 5 0 0 1-10 0z"/><path d="M7 6H4a1 1 0 0 0-1 1c0 2 1.5 3.5 4 3.5M17 6h3a1 1 0 0 1 1 1c0 2-1.5 3.5-4 3.5"/></g></symbol>
+      <symbol id="i-medal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14.5" r="5.5"/><path d="m9.5 9.6-3.5-6.6h4l2 3.8L14 3h4l-3.5 6.6"/><path d="m12 12.4.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z"/></g></symbol>
+      <symbol id="i-megaphone" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v3a1 1 0 0 0 1 1h2l3.5 4a1 1 0 0 0 1.5-.86V6.86A1 1 0 0 0 9.5 6L6 10H4a1 1 0 0 0-1 1z"/><path d="M14 9.5a4 4 0 0 1 0 6M17 7a8 8 0 0 1 0 11"/></g></symbol>
+      <symbol id="i-diploma" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 4.5z"/><path d="M20 17v5H6.5a2.5 2.5 0 0 1 0-5"/><path d="M9 7h7M9 11h5"/></g></symbol>
+      <symbol id="i-upload" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 8 5-5 5 5M12 3v12"/></g></symbol>
+      <symbol id="i-doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></g></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></g></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.2 2.4 2.4 4.6-5"/></g></symbol>
+      <symbol id="i-arrow-r" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></g></symbol>
+      <symbol id="i-arrow-up" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V4M5 11l7-7 7 7"/></g></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></g></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.5 19.5h19z"/><path d="M12 10v4M12 17.2v.05"/></g></symbol>
+      <symbol id="i-quote" viewBox="0 0 24 24"><path fill="currentColor" d="M10 7H6a3 3 0 0 0-3 3v4a3 3 0 0 0 3 3h2a1 1 0 0 0 1-1v-2.5A1.5 1.5 0 0 0 7.5 12H6v-1.5A1.5 1.5 0 0 1 7.5 9H9a1 1 0 0 0 1-1zm11 0h-4a3 3 0 0 0-3 3v4a3 3 0 0 0 3 3h2a1 1 0 0 0 1-1v-2.5a1.5 1.5 0 0 0-1.5-1.5H17v-1.5A1.5 1.5 0 0 1 18.5 9H20a1 1 0 0 0 1-1z"/></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M16 5a3.5 3.5 0 0 1 0 6.6M17.5 14.8c2.1.7 3.5 2.4 3.5 5.2"/></g></symbol>
+      <symbol id="i-flag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4c4-2.5 7 2.5 14 0v9c-7 2.5-10-2.5-14 0"/></g></symbol>
+      <symbol id="i-ig" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.43-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 3.24a6.6 6.6 0 1 0 0 13.2 6.6 6.6 0 0 0 0-13.2zm0 10.89a4.29 4.29 0 1 1 0-8.58 4.29 4.29 0 0 1 0 8.58zm6.84-11.15a1.54 1.54 0 1 1-3.08 0 1.54 1.54 0 0 1 3.08 0z"/></symbol>
+      <symbol id="i-fb" viewBox="0 0 24 24"><path fill="currentColor" d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></symbol>
+      <symbol id="i-yt" viewBox="0 0 24 24"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.12-2.12C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.53A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.12 2.12c1.88.53 9.38.53 9.38.53s7.5 0 9.38-.53a3 3 0 0 0 2.12-2.12A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8zM9.6 15.6V8.4l6.27 3.6-6.27 3.6z"/></symbol>
     </defs>
   </svg>
 
-  <!-- Skip link accesible -->
-  <a href="#hero" class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:top-3 focus:left-3 focus:bg-space-orange focus:text-space-black focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold">Saltar al contenido</a>
+  <a href="#hero" class="skip-link">Saltar al contenido</a>
+
+  <!-- Barra de progreso de lectura -->
+  <div class="progress" id="progress" aria-hidden="true"></div>
 
   <!-- ============================================================
-       1 · NAVBAR — sticky, fondo space-black translúcido con blur
+       NAVBAR
        ============================================================ -->
-  <header class="fixed top-0 inset-x-0 z-50 bg-space-black/80 backdrop-blur-md border-b border-white/5">
-    <nav class="max-w-7xl mx-auto px-5 lg:px-8 h-[68px] flex items-center justify-between" aria-label="Navegación principal">
-      <!-- Logo horizontal (versión blanco + estrella naranja, para fondo oscuro) -->
-      <a href="#hero" class="flex items-center shrink-0" aria-label="Argentina Space — inicio">
-        <img src="assets/logo/logo_horizontal_positivo.png" alt="Argentina Space" class="h-9 w-auto" />
+  <header class="nav" id="nav">
+    <nav class="nav__inner" aria-label="Navegación principal">
+      <a href="#hero" class="nav__logo" aria-label="Argentina Space — inicio">
+        <img src="assets/logo/logo_horizontal_positivo.png" alt="Argentina Space" />
       </a>
 
-      <!-- Links de escritorio -->
-      <ul class="hidden lg:flex items-center gap-7 text-sm text-white/80 font-medium">
-        <li><a href="#historia"   class="hover:text-space-cyan transition-colors">La historia</a></li>
-        <li><a href="#desafio"    class="hover:text-space-cyan transition-colors">El desafío</a></li>
-        <li><a href="#categorias" class="hover:text-space-cyan transition-colors">Categorías</a></li>
-        <li><a href="#premios"    class="hover:text-space-cyan transition-colors">Premios</a></li>
-        <li><a href="#participar" class="hover:text-space-cyan transition-colors">Cómo participar</a></li>
-        <li><a href="#sponsors"   class="hover:text-space-cyan transition-colors">Sponsors</a></li>
-        <li><a href="#bases"      class="hover:text-space-cyan transition-colors">Bases</a></li>
+      <ul class="nav__links">
+        <li><a href="#historia"   class="nav__link">La historia</a></li>
+        <li><a href="#desafio"    class="nav__link">El desafío</a></li>
+        <li><a href="#categorias" class="nav__link">Categorías</a></li>
+        <li><a href="#premios"    class="nav__link">Premios</a></li>
+        <li><a href="#participar" class="nav__link">Cómo participar</a></li>
+        <li><a href="#sponsors"   class="nav__link">Sponsors</a></li>
+        <li><a href="#bases"      class="nav__link">Bases</a></li>
       </ul>
 
-      <!-- CTA + hamburguesa -->
-      <div class="flex items-center gap-3">
-        <a href="#participar" class="btn-primary hidden sm:inline-flex items-center rounded-full px-5 py-2 text-sm">Participar</a>
-        <button id="menuToggle" class="lg:hidden p-2 text-white" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
-          <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <div class="nav__actions">
+        <a href="#participar" class="btn btn--primary" style="padding:11px 22px; font-size:13px;">
+          Participar
+          <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-r"/></svg>
+        </a>
+        <button class="nav__burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
+          <span></span><span></span><span></span>
         </button>
       </div>
     </nav>
-
-    <!-- Menú mobile colapsable -->
-    <div id="mobileMenu" class="lg:hidden hidden bg-space-navy/95 backdrop-blur-md border-t border-white/10">
-      <ul class="flex flex-col px-5 py-4 gap-1 text-white/90">
-        <li><a href="#historia"   class="block py-2.5 hover:text-space-cyan">La historia</a></li>
-        <li><a href="#desafio"    class="block py-2.5 hover:text-space-cyan">El desafío</a></li>
-        <li><a href="#categorias" class="block py-2.5 hover:text-space-cyan">Categorías</a></li>
-        <li><a href="#premios"    class="block py-2.5 hover:text-space-cyan">Premios</a></li>
-        <li><a href="#participar" class="block py-2.5 hover:text-space-cyan">Cómo participar</a></li>
-        <li><a href="#sponsors"   class="block py-2.5 hover:text-space-cyan">Sponsors</a></li>
-        <li><a href="#bases"      class="block py-2.5 hover:text-space-cyan">Bases</a></li>
-        <li class="pt-2"><a href="#participar" class="btn-primary inline-flex w-full justify-center rounded-full px-5 py-2.5">Participar</a></li>
-      </ul>
-    </div>
   </header>
+
+  <!-- Menú mobile fullscreen -->
+  <div class="menu" id="menu" aria-hidden="true">
+    <nav aria-label="Navegación móvil">
+      <a href="#historia"   class="menu__link" style="--i:0"><span class="menu__num">01</span> La historia</a>
+      <a href="#desafio"    class="menu__link" style="--i:1"><span class="menu__num">02</span> El desafío</a>
+      <a href="#categorias" class="menu__link" style="--i:2"><span class="menu__num">03</span> Categorías</a>
+      <a href="#premios"    class="menu__link" style="--i:3"><span class="menu__num">04</span> Premios</a>
+      <a href="#participar" class="menu__link" style="--i:4"><span class="menu__num">05</span> Cómo participar</a>
+      <a href="#sponsors"   class="menu__link" style="--i:5"><span class="menu__num">06</span> Sponsors</a>
+      <a href="#bases"      class="menu__link" style="--i:6"><span class="menu__num">07</span> Bases</a>
+      <div class="menu__cta">
+        <a href="#participar" class="btn btn--primary" style="width:100%;">
+          Participar del concurso
+          <svg class="icon" aria-hidden="true"><use href="#i-arrow-r"/></svg>
+        </a>
+      </div>
+    </nav>
+  </div>
 
   <main>
     <!-- ============================================================
-         2 · HERO — fondo espacial, estrellas, isotipo gigante de fondo
+         HERO — Patrón E del manual: fondo orbital a sangre + contenido
          ============================================================ -->
-    <section id="hero" class="relative min-h-screen flex items-center overflow-hidden pt-[68px]">
-      <!-- Foto de la Tierra desde órbita, oscurecida con overlay azul -->
-      <div class="absolute inset-0 -z-20">
-        <img src="assets/photos/fondo_tierra_orbita.jpg" alt="" aria-hidden="true" class="w-full h-full object-cover object-bottom opacity-60" />
-        <div class="absolute inset-0 bg-gradient-to-b from-space-black via-space-black/70 to-space-navy/60"></div>
+    <section id="hero" class="hero boot">
+      <div class="hero__bg">
+        <img src="assets/photos/fondo_tierra_orbita.jpg" alt="" aria-hidden="true" />
       </div>
-      <!-- Campo de estrellas -->
-      <div class="absolute inset-0 -z-10 starfield"></div>
+      <div class="stars" aria-hidden="true"></div>
 
-      <!-- Isotipo gigante como marca de agua de fondo -->
-      <img src="assets/logo/isotipo_estrella_gradiente.svg" alt="" aria-hidden="true"
-           class="float-slow absolute -right-16 top-1/2 -translate-y-1/2 w-[60vw] max-w-[680px] opacity-[0.13] pointer-events-none select-none" />
+      <div class="container hero__grid">
+        <div>
+          <p class="hero__kicker" data-boot style="--b:0">Argentina Space presenta</p>
 
-      <!-- Anillos orbitales decorativos -->
-      <div class="orbit-rings spin-slow w-[520px] h-[520px] right-[-120px] top-[15%]" aria-hidden="true"></div>
-      <div class="orbit-rings w-[760px] h-[760px] right-[-220px] top-[5%]" aria-hidden="true"></div>
-
-      <div class="relative max-w-7xl mx-auto px-5 lg:px-8 py-16 w-full">
-        <div class="max-w-3xl">
-          <!-- Kicker -->
-          <p class="reveal font-alt tracking-[0.35em] text-space-cyan text-xs sm:text-sm mb-5 uppercase">Argentina Space presenta</p>
-
-          <!-- Título principal (Michroma) -->
-          <h1 class="reveal font-display text-3xl sm:text-5xl lg:text-6xl leading-[1.15] mb-6">
-            Concurso de dibujo<br />
-            <span class="text-space-orange">· El Mono Juan</span>
+          <h1 class="hero__title">
+            <span class="line"><span class="hero__title-sm" data-boot style="--b:1">Concurso de dibujo</span></span>
+            <span class="line"><span class="hero__title-lg" data-boot style="--b:2">El Mono Juan
+              <svg class="icon" style="color:var(--orange)" aria-hidden="true"><use href="#i-star"/></svg>
+            </span></span>
           </h1>
 
-          <!-- Subtítulo (Montserrat) -->
-          <p class="reveal text-base sm:text-lg text-white/80 max-w-xl mb-8 leading-relaxed">
-            Dibujá al primer mono astronauta argentino y viajá al espacio con tu imaginación. Una misión creativa para chicos, chicas y adolescentes de todo el país.
+          <p class="hero__lede" data-boot style="--b:3">
+            Dibujá al primer mono astronauta argentino y viajá al espacio con tu imaginación.
+            Una misión creativa para chicos, chicas y adolescentes de todo el país.
           </p>
 
-          <!-- Píldoras de datos clave -->
-          <ul class="reveal flex flex-wrap gap-3 mb-10">
-            <li class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm">
-              <span class="text-space-cyan font-semibold">2 categorías</span><span class="text-white/60">6–12 y 13–17</span>
+          <ul class="hero__pills" data-boot style="--b:4">
+            <li class="pill pill--cyan">
+              <svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>
+              <strong>2 categorías</strong> 6–12 y 13–17 años
             </li>
-            <li class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm">
-              <span class="text-space-orange font-semibold">Premio</span><span class="text-white/70">tablet de dibujo</span>
+            <li class="pill pill--orange">
+              <svg class="icon" aria-hidden="true"><use href="#i-trophy"/></svg>
+              <strong>Premio</strong> tablet de dibujo
             </li>
-            <li class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm">
-              <span class="text-white/60">Cierre</span><span class="text-white font-semibold">dom 5 jul · 18:00</span>
+            <li class="pill pill--cyan">
+              <svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>
+              <strong>Cierre</strong> dom 5 jul · 18:00
             </li>
           </ul>
 
-          <!-- CUENTA REGRESIVA -->
-          <div class="reveal mb-10">
-            <p class="font-alt uppercase tracking-[0.25em] text-xs text-white/50 mb-3">Cuenta regresiva al cierre</p>
-            <div id="countdown" class="flex flex-wrap gap-3 sm:gap-4" role="timer" aria-live="polite" aria-label="Tiempo restante para el cierre de la convocatoria">
-              <div class="flex flex-col items-center justify-center w-[74px] sm:w-[88px] h-[80px] sm:h-[92px] rounded-2xl bg-space-navy/70 border border-white/10 backdrop-blur-sm">
-                <span id="cd-days" class="font-display text-2xl sm:text-3xl text-space-cyan">--</span>
-                <span class="text-[11px] uppercase tracking-widest text-white/50 mt-1">Días</span>
-              </div>
-              <div class="flex flex-col items-center justify-center w-[74px] sm:w-[88px] h-[80px] sm:h-[92px] rounded-2xl bg-space-navy/70 border border-white/10 backdrop-blur-sm">
-                <span id="cd-hours" class="font-display text-2xl sm:text-3xl text-space-cyan">--</span>
-                <span class="text-[11px] uppercase tracking-widest text-white/50 mt-1">Horas</span>
-              </div>
-              <div class="flex flex-col items-center justify-center w-[74px] sm:w-[88px] h-[80px] sm:h-[92px] rounded-2xl bg-space-navy/70 border border-white/10 backdrop-blur-sm">
-                <span id="cd-mins" class="font-display text-2xl sm:text-3xl text-space-cyan">--</span>
-                <span class="text-[11px] uppercase tracking-widest text-white/50 mt-1">Min</span>
-              </div>
-              <div class="flex flex-col items-center justify-center w-[74px] sm:w-[88px] h-[80px] sm:h-[92px] rounded-2xl bg-space-navy/70 border border-white/10 backdrop-blur-sm">
-                <span id="cd-secs" class="font-display text-2xl sm:text-3xl text-space-cyan">--</span>
-                <span class="text-[11px] uppercase tracking-widest text-white/50 mt-1">Seg</span>
-              </div>
+          <div class="count" data-boot style="--b:5">
+            <p class="count__label">
+              <svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>
+              Cuenta regresiva al cierre
+            </p>
+            <div class="count__cells" id="countdown" role="timer" aria-live="polite" aria-label="Tiempo restante para el cierre de la convocatoria">
+              <div class="cell"><span class="cell__value" id="cd-days">--</span><span class="cell__unit">Días</span></div>
+              <span class="count__sep" aria-hidden="true">:</span>
+              <div class="cell"><span class="cell__value" id="cd-hours">--</span><span class="cell__unit">Horas</span></div>
+              <span class="count__sep" aria-hidden="true">:</span>
+              <div class="cell"><span class="cell__value" id="cd-mins">--</span><span class="cell__unit">Min</span></div>
+              <span class="count__sep" aria-hidden="true">:</span>
+              <div class="cell"><span class="cell__value" id="cd-secs">--</span><span class="cell__unit">Seg</span></div>
             </div>
           </div>
 
-          <!-- Botones -->
-          <div class="reveal flex flex-wrap gap-4">
-            <a href="#participar" class="btn-primary inline-flex items-center rounded-full px-7 py-3">Participar</a>
-            <a href="#bases" class="btn-secondary inline-flex items-center rounded-full px-7 py-3">Ver bases</a>
+          <div class="hero__ctas" data-boot style="--b:6">
+            <a href="#participar" class="btn btn--primary">
+              Quiero participar
+              <svg class="icon" aria-hidden="true"><use href="#i-rocket"/></svg>
+            </a>
+            <a href="#bases" class="btn btn--ghost">
+              Ver las bases
+              <svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Sistema orbital de simbología (pág. 5): anillo / punto cian / isotipo -->
+        <div class="orbital" data-boot style="--b:4" aria-hidden="true">
+          <div class="orbital__ring orbital__ring--1"><span class="orbital__dot"></span></div>
+          <div class="orbital__ring orbital__ring--2"><span class="orbital__dot"></span><span class="orbital__dot orbital__dot--b"></span></div>
+          <div class="orbital__ring orbital__ring--3"></div>
+          <div class="orbital__core">
+            <img src="assets/logo/isotipo_estrella_naranja.svg" alt="" />
+          </div>
+          <div class="orbital__legend">
+            <span><i class="lg-ring"></i> Órbita</span>
+            <span><i class="lg-dot"></i> Imaginación</span>
+            <span><svg class="lg-star" aria-hidden="true"><use href="#i-star"/></svg> Tu dibujo</span>
           </div>
         </div>
       </div>
+
+      <a href="#historia" class="hero__scroll" data-boot style="--b:7">
+        DESLIZÁ
+        <span class="hero__scroll-line" aria-hidden="true"></span>
+      </a>
     </section>
 
+    <!-- Divisor marquee de marca -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <div class="marquee__group">
+          <span class="marquee__item">Dibujá</span><svg class="icon"><use href="#i-star"/></svg>
+          <span class="marquee__item marquee__item--ghost">Imaginá</span><svg class="icon"><use href="#i-star"/></svg>
+          <span class="marquee__item">Despegá</span><svg class="icon"><use href="#i-star"/></svg>
+          <span class="marquee__item marquee__item--ghost">Creá</span><svg class="icon"><use href="#i-star"/></svg>
+          <span class="marquee__item">Explorá</span><svg class="icon"><use href="#i-star"/></svg>
+          <span class="marquee__item marquee__item--ghost">El Mono Juan</span><svg class="icon"><use href="#i-star"/></svg>
+        </div>
+        <div class="marquee__group">
+          <span class="marquee__item">Dibujá</span><svg class="icon"><use href="#i-star"/></svg>
+          <span class="marquee__item marquee__item--ghost">Imaginá</span><svg class="icon"><use href="#i-star"/></svg>
+          <span class="marquee__item">Despegá</span><svg class="icon"><use href="#i-star"/></svg>
+          <span class="marquee__item marquee__item--ghost">Creá</span><svg class="icon"><use href="#i-star"/></svg>
+          <span class="marquee__item">Explorá</span><svg class="icon"><use href="#i-star"/></svg>
+          <span class="marquee__item marquee__item--ghost">El Mono Juan</span><svg class="icon"><use href="#i-star"/></svg>
+        </div>
+      </div>
+    </div>
+
     <!-- ============================================================
-         3 · 01 · LA HISTORIA DEL MONO JUAN — storytelling, fondo navy/negro con órbitas
+         01 · LA HISTORIA — Patrón A + figura con máscara de isotipo (Patrón B)
          ============================================================ -->
-    <section id="historia" class="relative py-24 lg:py-32 bg-space-navy overflow-hidden">
-      <!-- Órbitas decorativas + isotipo marca de agua -->
-      <div class="orbit-rings w-[700px] h-[700px] -left-60 top-10 opacity-50" aria-hidden="true"></div>
-      <div class="orbit-rings w-[420px] h-[420px] -left-40 top-40 opacity-40" aria-hidden="true"></div>
-      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-space-navy via-space-navy to-space-black"></div>
+    <section id="historia" class="sec sec--navy">
+      <span class="ring" style="width:680px;height:680px;left:-280px;top:60px;opacity:.5" aria-hidden="true"></span>
+      <span class="ring" style="width:420px;height:420px;left:-180px;top:190px;opacity:.4" aria-hidden="true"></span>
 
-      <div class="relative max-w-6xl mx-auto px-5 lg:px-8">
-        <!-- Indicador de sección -->
-        <div class="reveal flex items-center gap-4 mb-8">
-          <span class="font-display text-2xl sm:text-3xl"><span class="section-zero">0</span>1</span>
-          <span class="h-px flex-1 max-w-[120px] bg-space-cyan/40"></span>
-          <span class="font-alt uppercase tracking-[0.3em] text-space-cyan text-xs sm:text-sm">La historia</span>
-        </div>
+      <div class="container">
+        <header class="sec-head" data-reveal>
+          <div class="sec-head__meta">
+            <span class="sec-num"><span class="sec-num__zero">0</span>1</span>
+            <span class="sec-head__line"></span>
+            <span class="sec-head__tag">La historia</span>
+          </div>
+          <h2 class="sec-head__title">Un mono argentino que rozó el espacio</h2>
+        </header>
 
-        <h2 class="reveal font-display text-2xl sm:text-4xl leading-snug mb-8 max-w-3xl">
-          Un mono argentino que rozó el espacio
-        </h2>
-
-        <!-- Relato cálido y heroico (hechos reales) -->
-        <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-          <div class="reveal space-y-5 text-white/80 leading-relaxed">
+        <div class="historia__grid">
+          <div class="prose" data-reveal>
             <p>
-              Antes de que existiera Argentina Space, ya había un pionero. Se llamaba <strong class="text-white font-semibold">Juan</strong>, y no era un astronauta cualquiera: era un <strong class="text-white font-semibold">mono caí</strong> nacido en la selva de <strong class="text-white font-semibold">Misiones</strong>. Pequeño, curioso, valiente. Pesaba apenas <strong class="text-white font-semibold">1,4 kg</strong> y medía <strong class="text-white font-semibold">30 cm</strong>.
+              Antes de que existiera Argentina Space, ya había un pionero. Se llamaba <strong>Juan</strong>, y no era un astronauta cualquiera:
+              era un <strong>mono caí</strong> nacido en la selva de <strong>Misiones</strong>. Pequeño, curioso, valiente.
             </p>
             <p>
-              El <strong class="text-white font-semibold">23 de diciembre de 1969</strong>, pocos meses después de que el ser humano llegara a la Luna, Juan se preparó para hacer historia. A las <strong class="text-white font-semibold">6:30 de la mañana</strong>, desde la base de <strong class="text-white font-semibold">Chamical, en La Rioja</strong>, despegó a bordo del cohete sonda <strong class="text-white font-semibold">Canopus II</strong>.
+              El <strong>23 de diciembre de 1969</strong>, pocos meses después de que el ser humano llegara a la Luna, Juan se preparó para hacer historia.
+              A las <strong>6:30 de la mañana</strong>, desde la base de <strong>Chamical, en La Rioja</strong>, despegó a bordo del cohete sonda <strong>Canopus II</strong>.
             </p>
             <p>
-              Viajó sedado pero consciente, con un chaleco impermeable y un asiento especial diseñado para resistir la aceleración, dentro de una cápsula presurizada llamada <strong class="text-white font-semibold">"Amanecer"</strong>, con oxígeno para unos 20 minutos. Fue un <strong class="text-space-cyan font-semibold">vuelo suborbital de unos 8 minutos</strong> que alcanzó cerca de <strong class="text-space-cyan font-semibold">90 km de altura</strong>, rozando el límite entre la atmósfera y el espacio.
+              Viajó sedado pero consciente, con un chaleco impermeable y un asiento especial diseñado para resistir la aceleración,
+              dentro de una cápsula presurizada llamada <strong>"Amanecer"</strong>, con oxígeno para unos 20 minutos.
+              Fue un <span class="hl-cyan">vuelo suborbital de unos 8 minutos</span> que alcanzó cerca de <span class="hl-cyan">90 km de altura</span>,
+              rozando el límite entre la atmósfera y el espacio.
             </p>
             <p>
-              ¿Y lo mejor? <strong class="text-white font-semibold">Juan volvió sano y salvo.</strong> La misión fue un éxito total. Con ese vuelo, Argentina se convirtió en uno de los primeros países del mundo —el <strong class="text-space-orange font-semibold">4º</strong>, después de Estados Unidos, la Unión Soviética y Francia— en enviar un ser vivo al espacio y recuperarlo.
+              ¿Y lo mejor? <strong>Juan volvió sano y salvo.</strong> La misión fue un éxito total. Con ese vuelo, Argentina se convirtió en uno
+              de los primeros países del mundo —el <span class="hl-orange">4º</span>, después de Estados Unidos, la Unión Soviética y Francia—
+              en enviar un ser vivo al espacio y recuperarlo.
             </p>
             <p>
-              Todo fue parte del <strong class="text-white font-semibold">Proyecto BIO</strong> de la CNIE (hoy CONAE), impulsado por el ingeniero aeronáutico <strong class="text-white font-semibold">Aldo Zeoli</strong>, considerado uno de los padres de la astronáutica argentina. Después de su viaje, Juan vivió unos dos años más en el <strong class="text-white font-semibold">zoológico de Córdoba</strong>, donde fue una de las grandes atracciones. Su historia fue recuperada en la película <em class="text-white">"Juan, el primer astronauta argentino"</em>, de Diego Julio Ludueña.
+              Todo fue parte del <strong>Proyecto BIO</strong> de la CNIE (hoy CONAE), impulsado por el ingeniero aeronáutico <strong>Aldo Zeoli</strong>,
+              considerado uno de los padres de la astronáutica argentina. Después de su viaje, Juan vivió unos dos años más en el
+              <strong>zoológico de Córdoba</strong>, donde fue una de las grandes atracciones. Su historia fue recuperada en la película
+              <em>"Juan, el primer astronauta argentino"</em>, de Diego Julio Ludueña.
             </p>
           </div>
 
-          <!-- Foto con máscara estrella (recurso de marca) -->
-          <div class="reveal">
-            <div class="relative aspect-square max-w-md mx-auto">
-              <!-- Foto de Juan a plena luz (sin máscara, para verla completa) -->
-              <img src="assets/photos/mono_juan.webp" alt="Juan, el primer mono astronauta argentino, con su traje espacial" class="absolute inset-0 w-full h-full object-cover rounded-2xl" />
-              <!-- Anillo orbital sobre la foto -->
-              <div class="orbit-rings w-[110%] h-[110%] -left-[5%] -top-[5%] spin-slow" aria-hidden="true"></div>
+          <figure class="star-figure" data-reveal="right">
+            <div class="star-figure__frame">
+              <img class="star-figure__photo" src="assets/photos/mono_juan.webp" alt="Juan, el primer mono astronauta argentino, con su traje espacial" />
+              <span class="star-figure__label">Misiones · 1969</span>
             </div>
-            <p class="text-center text-xs text-white/40 mt-4 font-alt uppercase tracking-widest">Del ingenio argentino al espacio</p>
-          </div>
+            <figcaption>Del ingenio argentino al espacio</figcaption>
+          </figure>
         </div>
 
-        <!-- MINI-LÍNEA DE TIEMPO del vuelo -->
-        <div class="mt-20">
-          <h3 class="reveal font-alt uppercase tracking-[0.25em] text-white/50 text-sm mb-8">La misión de Juan, paso a paso</h3>
-          <ol class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <!-- Cada hito usa el isotipo cian como marcador -->
-            <li class="reveal group rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-space-cyan/50 transition-colors">
-              <img src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" class="w-7 h-7 mb-4" />
-              <p class="font-display text-sm text-space-cyan mb-2">Selva de Misiones</p>
-              <p class="text-sm text-white/70 leading-relaxed">Juan nace en la selva misionera. Un mono caí curioso, lejos de imaginar su destino.</p>
-            </li>
-            <li class="reveal group rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-space-cyan/50 transition-colors">
-              <img src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" class="w-7 h-7 mb-4" />
-              <p class="font-display text-sm text-space-cyan mb-2">Proyecto BIO</p>
-              <p class="text-sm text-white/70 leading-relaxed">Entrenamiento y preparación dentro de la Experiencia BIO de la CNIE.</p>
-            </li>
-            <li class="reveal group rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-space-orange/50 transition-colors">
-              <img src="assets/logo/isotipo_estrella_naranja.svg" alt="" aria-hidden="true" class="w-7 h-7 mb-4" />
-              <p class="font-display text-sm text-space-orange mb-2">Despegue en Chamical</p>
-              <p class="text-sm text-white/70 leading-relaxed">23/12/1969, 6:30 hs. El Canopus II despega desde La Rioja.</p>
-            </li>
-            <li class="reveal group rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-space-orange/50 transition-colors">
-              <img src="assets/logo/isotipo_estrella_naranja.svg" alt="" aria-hidden="true" class="w-7 h-7 mb-4" />
-              <p class="font-display text-sm text-space-orange mb-2">~90 km de altura</p>
-              <p class="text-sm text-white/70 leading-relaxed">Vuelo suborbital de unos 8 minutos. Juan roza el límite del espacio.</p>
-            </li>
-            <li class="reveal group rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-space-cyan/50 transition-colors">
-              <img src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" class="w-7 h-7 mb-4" />
-              <p class="font-display text-sm text-space-cyan mb-2">Regreso sano y salvo</p>
-              <p class="text-sm text-white/70 leading-relaxed">La cápsula vuelve a tierra. Misión cumplida: Argentina entre los primeros del mundo.</p>
-            </li>
-            <li class="reveal group rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-space-cyan/50 transition-colors">
-              <img src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" class="w-7 h-7 mb-4" />
-              <p class="font-display text-sm text-space-cyan mb-2">Zoo de Córdoba</p>
-              <p class="text-sm text-white/70 leading-relaxed">Juan vive dos años más como una gran atracción y leyenda nacional.</p>
-            </li>
-          </ol>
+        <!-- Ficha técnica de la misión -->
+        <div class="stats">
+          <div class="stat" data-reveal style="--d:.0s"><p class="stat__value">1,4 <sup>kg</sup></p><p class="stat__label">Peso de Juan</p></div>
+          <div class="stat" data-reveal style="--d:.07s"><p class="stat__value">30 <sup>cm</sup></p><p class="stat__label">Estatura</p></div>
+          <div class="stat" data-reveal style="--d:.14s"><p class="stat__value">~90 <sup>km</sup></p><p class="stat__label">Altura alcanzada</p></div>
+          <div class="stat" data-reveal style="--d:.21s"><p class="stat__value">8 <sup>min</sup></p><p class="stat__label">Vuelo suborbital</p></div>
+          <div class="stat stat--orange" data-reveal style="--d:.28s"><p class="stat__value">4º</p><p class="stat__label">País del mundo</p></div>
         </div>
+
+        <!-- Línea de tiempo de la misión -->
+        <h3 class="tl-title" data-reveal>La misión de Juan, paso a paso</h3>
+        <ol class="timeline">
+          <li class="tl-item" data-reveal style="--d:.0s">
+            <span class="tl-item__marker"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg></span>
+            <p class="tl-item__time">Origen</p>
+            <p class="tl-item__name">Selva de Misiones</p>
+            <p class="tl-item__text">Juan nace en la selva misionera. Un mono caí curioso, lejos de imaginar su destino.</p>
+          </li>
+          <li class="tl-item" data-reveal style="--d:.08s">
+            <span class="tl-item__marker"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg></span>
+            <p class="tl-item__time">Entrenamiento</p>
+            <p class="tl-item__name">Proyecto BIO</p>
+            <p class="tl-item__text">Preparación dentro de la Experiencia BIO de la CNIE, con traje y cápsula a medida.</p>
+          </li>
+          <li class="tl-item tl-item--orange" data-reveal style="--d:.16s">
+            <span class="tl-item__marker"><svg class="icon" aria-hidden="true"><use href="#i-rocket"/></svg></span>
+            <p class="tl-item__time">23/12/1969 · 6:30 hs</p>
+            <p class="tl-item__name">Despegue en Chamical</p>
+            <p class="tl-item__text">El Canopus II despega desde La Rioja con Juan a bordo de la cápsula "Amanecer".</p>
+          </li>
+          <li class="tl-item tl-item--orange" data-reveal style="--d:.24s">
+            <span class="tl-item__marker"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up"/></svg></span>
+            <p class="tl-item__time">Apogeo</p>
+            <p class="tl-item__name">~90 km de altura</p>
+            <p class="tl-item__text">Vuelo suborbital de unos 8 minutos. Juan roza el límite del espacio.</p>
+          </li>
+          <li class="tl-item" data-reveal style="--d:.32s">
+            <span class="tl-item__marker"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
+            <p class="tl-item__time">Regreso</p>
+            <p class="tl-item__name">Sano y salvo</p>
+            <p class="tl-item__text">La cápsula vuelve a tierra. Misión cumplida: Argentina entre los primeros del mundo.</p>
+          </li>
+          <li class="tl-item" data-reveal style="--d:.4s">
+            <span class="tl-item__marker"><svg class="icon" aria-hidden="true"><use href="#i-flag"/></svg></span>
+            <p class="tl-item__time">Legado</p>
+            <p class="tl-item__name">Zoo de Córdoba</p>
+            <p class="tl-item__text">Juan vive dos años más como una gran atracción y leyenda nacional.</p>
+          </li>
+        </ol>
 
         <!-- ¿Por qué es importante? -->
-        <div class="reveal mt-16 rounded-3xl border border-space-cyan/20 bg-space-black/40 p-8 lg:p-10 relative overflow-hidden">
-          <img src="assets/logo/isotipo_estrella_gradiente.svg" alt="" aria-hidden="true" class="absolute -right-8 -bottom-8 w-40 opacity-10" />
-          <h3 class="font-display text-xl sm:text-2xl mb-4 text-space-cyan">¿Por qué es importante?</h3>
-          <p class="text-white/80 leading-relaxed max-w-3xl">
-            La historia de Juan es un símbolo del <strong class="text-white font-semibold">ingenio y la ciencia argentina</strong>. Fue un antecedente de la <strong class="text-white font-semibold">soberanía tecnológica</strong> que hoy impulsa Argentina Space. Por eso te invitamos a sumarte a esta misión creativa: a <strong class="text-space-orange font-semibold">soñar en grande</strong>, como soñaron quienes hicieron volar a un pequeño mono hasta el borde del cielo.
+        <div class="why" data-reveal="zoom">
+          <img class="why__star" src="assets/logo/isotipo_estrella_gradiente.svg" alt="" aria-hidden="true" />
+          <h3>¿Por qué es importante?</h3>
+          <p>
+            La historia de Juan es un símbolo del <strong style="color:#fff">ingenio y la ciencia argentina</strong>.
+            Fue un antecedente de la <strong style="color:#fff">soberanía tecnológica</strong> que hoy impulsa Argentina Space.
+            Por eso te invitamos a sumarte a esta misión creativa: a <span class="hl-orange" style="color:var(--orange);font-weight:600">soñar en grande</span>,
+            como soñaron quienes hicieron volar a un pequeño mono hasta el borde del cielo.
           </p>
         </div>
       </div>
     </section>
 
     <!-- ============================================================
-         4 · 02 · EL DESAFÍO / LA CONSIGNA — panel steel para contraste
+         02 · EL DESAFÍO — Patrón C: panel con arcos concéntricos
          ============================================================ -->
-    <section id="desafio" class="relative py-24 lg:py-32 bg-space-steel overflow-hidden">
-      <div class="absolute inset-0 -z-10 bg-gradient-to-br from-space-steel via-space-steel to-space-navy/80"></div>
+    <section id="desafio" class="sec desafio">
+      <div class="desafio__arcs" aria-hidden="true"><span></span><span></span><span></span></div>
 
-      <div class="relative max-w-6xl mx-auto px-5 lg:px-8">
-        <div class="reveal flex items-center gap-4 mb-8">
-          <span class="font-display text-2xl sm:text-3xl text-white"><span class="section-zero !border-space-orange !text-space-orange">0</span>2</span>
-          <span class="h-px flex-1 max-w-[120px] bg-space-orange/50"></span>
-          <span class="font-alt uppercase tracking-[0.3em] text-space-orange text-xs sm:text-sm">El desafío</span>
-        </div>
+      <div class="container">
+        <header class="sec-head sec-head--orange" data-reveal>
+          <div class="sec-head__meta">
+            <span class="sec-num"><span class="sec-num__zero">0</span>2</span>
+            <span class="sec-head__line"></span>
+            <span class="sec-head__tag">El desafío</span>
+          </div>
+          <h2 class="sec-head__title">Dibujá a Juan como te lo imaginás</h2>
+        </header>
 
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-          <div class="reveal">
-            <h2 class="font-display text-2xl sm:text-4xl leading-snug mb-6 text-white">Dibujá a Juan como te lo imaginás</h2>
-            <p class="text-white/90 leading-relaxed mb-4">
-              La consigna es simple y enorme a la vez: <strong class="text-white font-semibold">imaginá y representá a Juan</strong>, el primer mono astronauta argentino. Su viaje, su cápsula "Amanecer", el despegue del Canopus II, su regreso triunfal… o cómo lo imaginás explorando el espacio.
+        <div class="desafio__grid">
+          <div class="prose" data-reveal="left">
+            <p>
+              La consigna es simple y enorme a la vez: <strong>imaginá y representá a Juan</strong>, el primer mono astronauta argentino.
+              Su viaje, su cápsula "Amanecer", el despegue del Canopus II, su regreso triunfal… o cómo lo imaginás explorando el espacio.
             </p>
-            <p class="text-white/90 leading-relaxed mb-4">
-              <strong class="text-white font-semibold">Técnica libre:</strong> lápiz, acuarela, marcadores, témpera, digital, collage… lo que más te guste. Lo importante es tu mirada, tu creatividad y tus ganas de contar esta historia.
+            <p>
+              <strong>Técnica libre:</strong> lápiz, acuarela, marcadores, témpera, digital, collage… lo que más te guste.
+              Lo importante es tu mirada, tu creatividad y tus ganas de contar esta historia.
             </p>
-            <p class="text-space-cyan font-semibold">No hay una forma correcta de dibujar a un héroe. Hay la tuya.</p>
+            <p class="desafio__quote">
+              <svg class="icon" aria-hidden="true"><use href="#i-quote"/></svg>
+              No hay una forma correcta de dibujar a un héroe. Hay la tuya.
+            </p>
           </div>
 
-          <!-- Sugerencias por edad -->
-          <div class="reveal grid gap-5">
-            <div class="rounded-2xl bg-space-black/70 border border-white/10 p-6">
-              <div class="flex items-center gap-3 mb-3">
-                <img src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" class="w-6 h-6" />
-                <h3 class="font-display text-sm text-space-cyan">Si tenés 6 a 12</h3>
+          <div data-reveal="right">
+            <div class="tip tip--cyan">
+              <span class="tip__edge" aria-hidden="true"></span>
+              <div class="tip__head">
+                <svg class="icon" aria-hidden="true"><use href="#i-palette"/></svg>
+                <h3>Si tenés 6 a 12</h3>
               </div>
-              <p class="text-sm text-white/75 leading-relaxed">Dejá volar la imaginación: colores, planetas, estrellas, a Juan sonriendo en su cohete. ¡Diversión y aventura ante todo!</p>
+              <p>Dejá volar la imaginación: colores, planetas, estrellas, a Juan sonriendo en su cohete. ¡Diversión y aventura ante todo!</p>
             </div>
-            <div class="rounded-2xl bg-space-black/70 border border-white/10 p-6">
-              <div class="flex items-center gap-3 mb-3">
-                <img src="assets/logo/isotipo_estrella_naranja.svg" alt="" aria-hidden="true" class="w-6 h-6" />
-                <h3 class="font-display text-sm text-space-orange">Si tenés 13 a 17</h3>
+            <div class="tip tip--orange">
+              <span class="tip__edge" aria-hidden="true"></span>
+              <div class="tip__head">
+                <svg class="icon" aria-hidden="true"><use href="#i-brush"/></svg>
+                <h3>Si tenés 13 a 17</h3>
               </div>
-              <p class="text-sm text-white/75 leading-relaxed">Animate a la atmósfera, la luz, la emoción del momento. Contá una escena, un detalle técnico, una metáfora de la misión.</p>
+              <p>Animate a la atmósfera, la luz, la emoción del momento. Contá una escena, un detalle técnico, una metáfora de la misión.</p>
             </div>
           </div>
         </div>
@@ -441,456 +1390,601 @@
     </section>
 
     <!-- ============================================================
-         5 · 03 · CATEGORÍAS — dos cards grandes (cian / naranja)
+         03 · CATEGORÍAS
          ============================================================ -->
-    <section id="categorias" class="relative py-24 lg:py-32 bg-space-black overflow-hidden">
-      <div class="absolute inset-0 -z-10 starfield opacity-60"></div>
+    <section id="categorias" class="sec sec--black">
+      <div class="stars" style="opacity:.55" aria-hidden="true"></div>
 
-      <div class="relative max-w-6xl mx-auto px-5 lg:px-8">
-        <div class="reveal flex items-center gap-4 mb-8">
-          <span class="font-display text-2xl sm:text-3xl"><span class="section-zero">0</span>3</span>
-          <span class="h-px flex-1 max-w-[120px] bg-space-cyan/40"></span>
-          <span class="font-alt uppercase tracking-[0.3em] text-space-cyan text-xs sm:text-sm">Categorías</span>
-        </div>
+      <div class="container">
+        <header class="sec-head" data-reveal>
+          <div class="sec-head__meta">
+            <span class="sec-num"><span class="sec-num__zero">0</span>3</span>
+            <span class="sec-head__line"></span>
+            <span class="sec-head__tag">Categorías</span>
+          </div>
+          <h2 class="sec-head__title">Dos misiones, una sola galaxia de talento</h2>
+        </header>
 
-        <h2 class="reveal font-display text-2xl sm:text-4xl leading-snug mb-12 max-w-2xl">Dos misiones, una sola galaxia de talento</h2>
-
-        <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
-          <!-- Card A — acento cian -->
-          <article class="reveal group relative rounded-3xl border border-space-cyan/30 bg-space-navy/40 p-8 lg:p-10 overflow-hidden hover:-translate-y-1.5 hover:border-space-cyan transition-all duration-300">
-            <img src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" class="absolute -right-6 -top-6 w-32 opacity-15 group-hover:opacity-25 transition-opacity" />
-            <span class="inline-block font-alt uppercase tracking-[0.25em] text-space-cyan text-xs mb-4">Categoría A</span>
-            <h3 class="font-display text-2xl sm:text-3xl mb-2">Exploradores</h3>
-            <p class="text-space-cyan font-semibold mb-6">6 a 12 años</p>
-            <p class="text-white/75 leading-relaxed mb-6">Los más chicos despegan con toda la imaginación. Buscamos creatividad, color y ganas de contar la aventura de Juan a su manera.</p>
-            <p class="inline-flex items-center gap-2 text-sm text-white/60 border-t border-white/10 pt-4">
-              <img src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" class="w-4 h-4" /> 1 obra por participante
-            </p>
+        <div class="cats">
+          <article class="cat cat--cyan" data-reveal style="--d:.0s">
+            <img class="cat__watermark" src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" />
+            <span class="cat__tag">
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-star"/></svg>
+              Categoría A
+            </span>
+            <h3 class="cat__name">Exploradores</h3>
+            <p class="cat__age">6 a 12 años</p>
+            <p class="cat__desc">Los más chicos despegan con toda la imaginación. Buscamos creatividad, color y ganas de contar la aventura de Juan a su manera.</p>
+            <div class="cat__meta">
+              <span><svg class="icon" aria-hidden="true"><use href="#i-brush"/></svg> Técnica libre</span>
+              <span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg> 1 obra por participante</span>
+            </div>
           </article>
 
-          <!-- Card B — acento naranja -->
-          <article class="reveal group relative rounded-3xl border border-space-orange/30 bg-space-navy/40 p-8 lg:p-10 overflow-hidden hover:-translate-y-1.5 hover:border-space-orange transition-all duration-300">
-            <img src="assets/logo/isotipo_estrella_naranja.svg" alt="" aria-hidden="true" class="absolute -right-6 -top-6 w-32 opacity-15 group-hover:opacity-25 transition-opacity" />
-            <span class="inline-block font-alt uppercase tracking-[0.25em] text-space-orange text-xs mb-4">Categoría B</span>
-            <h3 class="font-display text-2xl sm:text-3xl mb-2">Cadetes</h3>
-            <p class="text-space-orange font-semibold mb-6">13 a 17 años</p>
-            <p class="text-white/75 leading-relaxed mb-6">Los adolescentes elevan el vuelo con técnica y concepto. Valoramos la mirada personal, el dominio del recurso y la fuerza de la idea.</p>
-            <p class="inline-flex items-center gap-2 text-sm text-white/60 border-t border-white/10 pt-4">
-              <img src="assets/logo/isotipo_estrella_naranja.svg" alt="" aria-hidden="true" class="w-4 h-4" /> 1 obra por participante
-            </p>
+          <article class="cat cat--orange" data-reveal style="--d:.12s">
+            <img class="cat__watermark" src="assets/logo/isotipo_estrella_naranja.svg" alt="" aria-hidden="true" />
+            <span class="cat__tag">
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-star"/></svg>
+              Categoría B
+            </span>
+            <h3 class="cat__name">Cadetes</h3>
+            <p class="cat__age">13 a 17 años</p>
+            <p class="cat__desc">Los adolescentes elevan el vuelo con técnica y concepto. Valoramos la mirada personal, el dominio del recurso y la fuerza de la idea.</p>
+            <div class="cat__meta">
+              <span><svg class="icon" aria-hidden="true"><use href="#i-brush"/></svg> Técnica libre</span>
+              <span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg> 1 obra por participante</span>
+            </div>
           </article>
         </div>
       </div>
     </section>
 
     <!-- ============================================================
-         6 · 04 · PREMIOS — tablet de dibujo como premio estrella + placeholders
+         04 · PREMIOS
          ============================================================ -->
-    <section id="premios" class="relative py-24 lg:py-32 bg-space-navy overflow-hidden">
-      <div class="orbit-rings w-[600px] h-[600px] -right-40 -top-20 spin-slow opacity-40" aria-hidden="true"></div>
-      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-space-black via-space-navy to-space-black"></div>
+    <section id="premios" class="sec sec--navy">
+      <span class="ring" style="width:600px;height:600px;right:-220px;top:-120px;opacity:.4" aria-hidden="true"></span>
 
-      <div class="relative max-w-6xl mx-auto px-5 lg:px-8">
-        <div class="reveal flex items-center gap-4 mb-8">
-          <span class="font-display text-2xl sm:text-3xl"><span class="section-zero !border-space-orange !text-space-orange">0</span>4</span>
-          <span class="h-px flex-1 max-w-[120px] bg-space-orange/50"></span>
-          <span class="font-alt uppercase tracking-[0.3em] text-space-orange text-xs sm:text-sm">Premios</span>
+      <div class="container">
+        <header class="sec-head sec-head--orange" data-reveal>
+          <div class="sec-head__meta">
+            <span class="sec-num"><span class="sec-num__zero">0</span>4</span>
+            <span class="sec-head__line"></span>
+            <span class="sec-head__tag">Premios</span>
+          </div>
+          <h2 class="sec-head__title">Tu talento tiene recompensa</h2>
+          <p class="sec-head__lede">Un ganador o ganadora por categoría se lleva el premio estrella. Y hay más reconocimientos en camino.</p>
+        </header>
+
+        <!-- Premio principal -->
+        <div class="prize-hero" data-reveal="zoom">
+          <div>
+            <span class="prize-hero__badge">
+              <svg class="icon" aria-hidden="true"><use href="#i-trophy"/></svg>
+              Premio principal
+            </span>
+            <h3>Una tablet de dibujo</h3>
+            <p>
+              Para que sigas creando sin límites. <strong style="color:#fff">Un premio por cada categoría</strong> (Exploradores y Cadetes):
+              la herramienta ideal para que tu próxima obra nazca en digital.
+            </p>
+            <p class="prize-hero__note">
+              <svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>
+              2 tablets en juego — una por categoría
+            </p>
+          </div>
+          <!-- Ilustración: tablet con el isotipo en pantalla -->
+          <div class="prize-hero__art" aria-hidden="true">
+            <svg viewBox="0 0 300 230" fill="none">
+              <rect x="30" y="18" width="240" height="180" rx="18" fill="#000D21" stroke="#546175" stroke-width="2"/>
+              <rect x="46" y="34" width="208" height="148" rx="8" fill="#002654"/>
+              <circle cx="150" cy="108" r="56" stroke="#546175" stroke-opacity=".5" stroke-width="1"/>
+              <circle cx="150" cy="108" r="38" stroke="#48F6FF" stroke-opacity=".3" stroke-width="1" stroke-dasharray="4 5"/>
+              <circle cx="150" cy="52" r="3.5" fill="#48F6FF"/>
+              <path class="tablet-star" d="M150 76 C150 93.6 132.4 108 114.8 108 C132.4 108 150 122.4 150 140 C150 122.4 167.6 108 185.2 108 C167.6 108 150 93.6 150 76 Z" fill="url(#tabletGrad)"/>
+              <defs>
+                <linearGradient id="tabletGrad" x1="150" y1="76" x2="150" y2="140" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#1B459F"/><stop offset="1" stop-color="#F8B135"/>
+                </linearGradient>
+              </defs>
+              <rect x="262" y="96" width="4" height="24" rx="2" fill="#546175"/>
+              <g transform="rotate(40 248 196)">
+                <rect x="240" y="150" width="13" height="74" rx="6" fill="#546175"/>
+                <path d="M240 224 L246.5 238 L253 224 Z" fill="#F8B135"/>
+              </g>
+            </svg>
+          </div>
         </div>
 
-        <h2 class="reveal font-display text-2xl sm:text-4xl leading-snug mb-4 max-w-2xl">Tu talento tiene recompensa</h2>
-        <p class="reveal text-white/70 mb-12 max-w-2xl">Un ganador o ganadora por categoría se lleva el premio estrella. Y hay más reconocimientos en camino.</p>
-
-        <!-- Premio principal: tablet de dibujo -->
-        <div class="reveal relative rounded-3xl border-2 border-space-orange/40 bg-gradient-to-br from-space-navy to-space-black p-8 lg:p-12 mb-8 overflow-hidden">
-          <img src="assets/logo/isotipo_estrella_gradiente.svg" alt="" aria-hidden="true" class="absolute right-6 top-1/2 -translate-y-1/2 w-44 lg:w-56 opacity-20 float-slow" />
-          <span class="inline-flex items-center gap-2 rounded-full bg-space-orange text-space-black font-bold text-xs uppercase tracking-widest px-4 py-1.5 mb-5">Premio principal</span>
-          <h3 class="font-display text-2xl sm:text-4xl mb-3 max-w-lg">Una tablet de dibujo</h3>
-          <p class="text-white/80 leading-relaxed max-w-xl">Para que sigas creando sin límites. <strong class="text-white font-semibold">Un premio por cada categoría</strong> (Exploradores y Cadetes): la herramienta ideal para que tu próxima obra nazca en digital.</p>
-        </div>
-
-        <!-- Otros premios (placeholders editables) -->
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div class="reveal rounded-2xl border border-white/10 bg-white/5 p-6">
-            <img src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" class="w-7 h-7 mb-4" />
-            <h4 class="font-display text-sm text-space-cyan mb-2">Kits de arte</h4>
-            <p class="text-sm text-white/60 leading-relaxed">Materiales para seguir creando. <span class="text-space-orange font-semibold">[completar premio]</span></p>
+        <!-- Otros reconocimientos -->
+        <div class="prizes">
+          <div class="prize" data-reveal style="--d:.0s">
+            <span class="prize__icon"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-palette"/></svg></span>
+            <h4>Kits de arte</h4>
+            <p>Materiales para seguir creando. <span class="todo-tag">[completar premio]</span></p>
           </div>
-          <div class="reveal rounded-2xl border border-white/10 bg-white/5 p-6">
-            <img src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" class="w-7 h-7 mb-4" />
-            <h4 class="font-display text-sm text-space-cyan mb-2">Menciones especiales</h4>
-            <p class="text-sm text-white/60 leading-relaxed">Reconocimiento del jurado. <span class="text-space-orange font-semibold">[completar premio]</span></p>
+          <div class="prize" data-reveal style="--d:.07s">
+            <span class="prize__icon"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-medal"/></svg></span>
+            <h4>Menciones especiales</h4>
+            <p>Reconocimiento del jurado. <span class="todo-tag">[completar premio]</span></p>
           </div>
-          <div class="reveal rounded-2xl border border-white/10 bg-white/5 p-6">
-            <img src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" class="w-7 h-7 mb-4" />
-            <h4 class="font-display text-sm text-space-cyan mb-2">Difusión en redes</h4>
-            <p class="text-sm text-white/60 leading-relaxed">Tu obra en los canales de Argentina Space. <span class="text-space-orange font-semibold">[completar premio]</span></p>
+          <div class="prize" data-reveal style="--d:.14s">
+            <span class="prize__icon"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-megaphone"/></svg></span>
+            <h4>Difusión en redes</h4>
+            <p>Tu obra en los canales de Argentina Space. <span class="todo-tag">[completar premio]</span></p>
           </div>
-          <div class="reveal rounded-2xl border border-white/10 bg-white/5 p-6">
-            <img src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" class="w-7 h-7 mb-4" />
-            <h4 class="font-display text-sm text-space-cyan mb-2">Diplomas</h4>
-            <p class="text-sm text-white/60 leading-relaxed">Certificado de participación. <span class="text-space-orange font-semibold">[completar premio]</span></p>
+          <div class="prize" data-reveal style="--d:.0s">
+            <span class="prize__icon"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-diploma"/></svg></span>
+            <h4>Diplomas</h4>
+            <p>Certificado de participación. <span class="todo-tag">[completar premio]</span></p>
           </div>
-          <div class="reveal rounded-2xl border border-dashed border-white/20 bg-transparent p-6 flex items-center justify-center text-center">
-            <p class="text-sm text-white/40"><span class="text-space-orange font-semibold">[completar premio o mención]</span></p>
+          <div class="prize prize--todo" data-reveal style="--d:.07s">
+            <p class="todo-tag">[completar premio o mención]</p>
           </div>
-          <div class="reveal rounded-2xl border border-dashed border-white/20 bg-transparent p-6 flex items-center justify-center text-center">
-            <p class="text-sm text-white/40"><span class="text-space-orange font-semibold">[completar premio o mención]</span></p>
+          <div class="prize prize--todo" data-reveal style="--d:.14s">
+            <p class="todo-tag">[completar premio o mención]</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ============================================================
-         7 · 05 · CÓMO PARTICIPAR + FECHAS CLAVE
+         05 · CÓMO PARTICIPAR + FECHAS CLAVE
          ============================================================ -->
-    <section id="participar" class="relative py-24 lg:py-32 bg-space-black overflow-hidden">
-      <div class="absolute inset-0 -z-10 starfield opacity-50"></div>
+    <section id="participar" class="sec sec--black">
+      <div class="stars" style="opacity:.45" aria-hidden="true"></div>
 
-      <div class="relative max-w-6xl mx-auto px-5 lg:px-8">
-        <div class="reveal flex items-center gap-4 mb-8">
-          <span class="font-display text-2xl sm:text-3xl"><span class="section-zero">0</span>5</span>
-          <span class="h-px flex-1 max-w-[120px] bg-space-cyan/40"></span>
-          <span class="font-alt uppercase tracking-[0.3em] text-space-cyan text-xs sm:text-sm">Cómo participar</span>
-        </div>
+      <div class="container">
+        <header class="sec-head" data-reveal>
+          <div class="sec-head__meta">
+            <span class="sec-num"><span class="sec-num__zero">0</span>5</span>
+            <span class="sec-head__line"></span>
+            <span class="sec-head__tag">Cómo participar</span>
+          </div>
+          <h2 class="sec-head__title">Tu misión, en 4 pasos</h2>
+        </header>
 
-        <h2 class="reveal font-display text-2xl sm:text-4xl leading-snug mb-12 max-w-2xl">Tu misión, en 4 pasos</h2>
-
-        <!-- Pasos numerados -->
-        <ol class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-20">
-          <li class="reveal rounded-2xl border border-white/10 bg-space-navy/40 p-6">
-            <span class="font-display text-3xl text-space-cyan">1</span>
-            <h3 class="font-display text-sm mt-4 mb-2">Leé las bases</h3>
-            <p class="text-sm text-white/65 leading-relaxed">Repasá las reglas del concurso para participar sin sorpresas.</p>
+        <ol class="steps">
+          <li class="step" data-reveal style="--d:.0s">
+            <div class="step__top">
+              <span class="step__num">1</span>
+              <svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>
+            </div>
+            <h3>Leé las bases</h3>
+            <p>Repasá las reglas del concurso para participar sin sorpresas.</p>
           </li>
-          <li class="reveal rounded-2xl border border-white/10 bg-space-navy/40 p-6">
-            <span class="font-display text-3xl text-space-cyan">2</span>
-            <h3 class="font-display text-sm mt-4 mb-2">Creá tu dibujo</h3>
-            <p class="text-sm text-white/65 leading-relaxed">Dale forma a tu versión del Mono Juan con la técnica que prefieras.</p>
+          <li class="step" data-reveal style="--d:.09s">
+            <div class="step__top">
+              <span class="step__num">2</span>
+              <svg class="icon" aria-hidden="true"><use href="#i-brush"/></svg>
+            </div>
+            <h3>Creá tu dibujo</h3>
+            <p>Dale forma a tu versión del Mono Juan con la técnica que prefieras.</p>
           </li>
-          <li class="reveal rounded-2xl border border-white/10 bg-space-navy/40 p-6">
-            <span class="font-display text-3xl text-space-cyan">3</span>
-            <h3 class="font-display text-sm mt-4 mb-2">Completá el formulario</h3>
-            <p class="text-sm text-white/65 leading-relaxed">Subí tu obra y tus datos en <a href="[LINK_FORMULARIO]" class="text-space-cyan underline underline-offset-2 hover:text-space-orange">[LINK_FORMULARIO]</a> o escribinos a <a href="mailto:[EMAIL_CONTACTO]" class="text-space-cyan underline underline-offset-2 hover:text-space-orange">[EMAIL_CONTACTO]</a>.</p>
+          <li class="step" data-reveal style="--d:.18s">
+            <div class="step__top">
+              <span class="step__num">3</span>
+              <svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>
+            </div>
+            <h3>Completá el formulario</h3>
+            <p>Subí tu obra y tus datos en <a href="[LINK_FORMULARIO]">[LINK_FORMULARIO]</a> o escribinos a <a href="mailto:[EMAIL_CONTACTO]">[EMAIL_CONTACTO]</a>.</p>
           </li>
-          <li class="reveal rounded-2xl border border-space-orange/30 bg-space-navy/40 p-6">
-            <span class="font-display text-3xl text-space-orange">4</span>
-            <h3 class="font-display text-sm mt-4 mb-2">¡Listo!</h3>
-            <p class="text-sm text-white/65 leading-relaxed">Tu obra entra en órbita. Ahora esperá el fallo del jurado.</p>
+          <li class="step step--final" data-reveal style="--d:.27s">
+            <div class="step__top">
+              <span class="step__num">4</span>
+              <svg class="icon" aria-hidden="true"><use href="#i-rocket"/></svg>
+            </div>
+            <h3>¡Listo!</h3>
+            <p>Tu obra entra en órbita. Ahora esperá el fallo del jurado.</p>
           </li>
         </ol>
 
-        <!-- Línea de tiempo de la convocatoria -->
-        <h3 class="reveal font-alt uppercase tracking-[0.25em] text-white/50 text-sm mb-8">Fechas clave</h3>
-        <div class="reveal grid sm:grid-cols-2 gap-6">
-          <div class="relative rounded-2xl border border-space-cyan/30 bg-space-navy/50 p-8">
-            <img src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" class="w-8 h-8 mb-4" />
-            <p class="font-alt uppercase tracking-widest text-xs text-space-cyan mb-2">Apertura</p>
-            <p class="font-display text-lg">Lunes 8 de junio de 2026</p>
+        <h3 class="tl-title" data-reveal>Fechas clave</h3>
+        <div class="dates">
+          <div class="date-card date-card--open" data-reveal style="--d:.0s">
+            <img class="date-card__watermark" src="assets/logo/isotipo_estrella_cian.svg" alt="" aria-hidden="true" />
+            <p class="date-card__tag">
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-calendar"/></svg>
+              Apertura
+            </p>
+            <p class="date-card__date">Lunes 8 de junio<br />de 2026</p>
           </div>
-          <div class="relative rounded-2xl border border-space-orange/40 bg-space-navy/50 p-8">
-            <img src="assets/logo/isotipo_estrella_naranja.svg" alt="" aria-hidden="true" class="w-8 h-8 mb-4" />
-            <p class="font-alt uppercase tracking-widest text-xs text-space-orange mb-2">Cierre y entrega máxima</p>
-            <p class="font-display text-lg">Domingo 5 de julio de 2026 · 18:00 hs</p>
-            <p class="text-sm text-white/60 mt-3">Hora de Argentina. <strong class="text-white">No se reciben obras después de esa hora.</strong></p>
+          <div class="date-card date-card--close" data-reveal style="--d:.12s">
+            <img class="date-card__watermark" src="assets/logo/isotipo_estrella_naranja.svg" alt="" aria-hidden="true" />
+            <p class="date-card__tag">
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-clock"/></svg>
+              Cierre y entrega máxima
+            </p>
+            <p class="date-card__date">Domingo 5 de julio<br />de 2026 · 18:00 hs</p>
+            <p class="date-card__note">
+              <svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
+              <span>Hora de Argentina. <strong>No se reciben obras después de esa hora.</strong></span>
+            </p>
           </div>
         </div>
 
-        <div class="reveal mt-12 flex flex-wrap gap-4">
-          <a href="[LINK_FORMULARIO]" class="btn-primary inline-flex items-center rounded-full px-7 py-3">Subir mi obra</a>
-          <a href="#bases" class="btn-secondary inline-flex items-center rounded-full px-7 py-3">Leer las bases</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         8 · 06 · SPONSORS — grilla de logos grises que se colorean al hover
-         ============================================================ -->
-    <section id="sponsors" class="relative py-24 lg:py-32 bg-space-steel/30 overflow-hidden">
-      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-space-black via-space-navy/40 to-space-black"></div>
-
-      <div class="relative max-w-6xl mx-auto px-5 lg:px-8">
-        <div class="reveal flex items-center gap-4 mb-8">
-          <span class="font-display text-2xl sm:text-3xl"><span class="section-zero">0</span>6</span>
-          <span class="h-px flex-1 max-w-[120px] bg-space-cyan/40"></span>
-          <span class="font-alt uppercase tracking-[0.3em] text-space-cyan text-xs sm:text-sm">Sponsors</span>
-        </div>
-
-        <h2 class="reveal font-display text-2xl sm:text-4xl leading-snug mb-3">Con el apoyo de:</h2>
-        <p class="reveal text-white/60 mb-12 max-w-xl">Quienes hacen posible esta misión creativa. El organizador reemplaza estos espacios por los logos reales.</p>
-
-        <!-- Grilla de placeholders: gris -> color al hover -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-          <!-- Repetimos 8 placeholders -->
-          <div class="reveal group flex items-center justify-center h-28 rounded-2xl border border-white/10 bg-white/5 grayscale opacity-60 hover:opacity-100 hover:grayscale-0 hover:border-space-cyan/50 transition-all duration-300">
-            <span class="font-alt uppercase tracking-widest text-xs text-white/60 group-hover:text-space-cyan">[Logo sponsor 1]</span>
-          </div>
-          <div class="reveal group flex items-center justify-center h-28 rounded-2xl border border-white/10 bg-white/5 grayscale opacity-60 hover:opacity-100 hover:grayscale-0 hover:border-space-cyan/50 transition-all duration-300">
-            <span class="font-alt uppercase tracking-widest text-xs text-white/60 group-hover:text-space-cyan">[Logo sponsor 2]</span>
-          </div>
-          <div class="reveal group flex items-center justify-center h-28 rounded-2xl border border-white/10 bg-white/5 grayscale opacity-60 hover:opacity-100 hover:grayscale-0 hover:border-space-cyan/50 transition-all duration-300">
-            <span class="font-alt uppercase tracking-widest text-xs text-white/60 group-hover:text-space-cyan">[Logo sponsor 3]</span>
-          </div>
-          <div class="reveal group flex items-center justify-center h-28 rounded-2xl border border-white/10 bg-white/5 grayscale opacity-60 hover:opacity-100 hover:grayscale-0 hover:border-space-cyan/50 transition-all duration-300">
-            <span class="font-alt uppercase tracking-widest text-xs text-white/60 group-hover:text-space-cyan">[Logo sponsor 4]</span>
-          </div>
-          <div class="reveal group flex items-center justify-center h-28 rounded-2xl border border-white/10 bg-white/5 grayscale opacity-60 hover:opacity-100 hover:grayscale-0 hover:border-space-cyan/50 transition-all duration-300">
-            <span class="font-alt uppercase tracking-widest text-xs text-white/60 group-hover:text-space-cyan">[Logo sponsor 5]</span>
-          </div>
-          <div class="reveal group flex items-center justify-center h-28 rounded-2xl border border-white/10 bg-white/5 grayscale opacity-60 hover:opacity-100 hover:grayscale-0 hover:border-space-cyan/50 transition-all duration-300">
-            <span class="font-alt uppercase tracking-widest text-xs text-white/60 group-hover:text-space-cyan">[Logo sponsor 6]</span>
-          </div>
-          <div class="reveal group flex items-center justify-center h-28 rounded-2xl border border-white/10 bg-white/5 grayscale opacity-60 hover:opacity-100 hover:grayscale-0 hover:border-space-cyan/50 transition-all duration-300">
-            <span class="font-alt uppercase tracking-widest text-xs text-white/60 group-hover:text-space-cyan">[Logo sponsor 7]</span>
-          </div>
-          <div class="reveal group flex items-center justify-center h-28 rounded-2xl border border-white/10 bg-white/5 grayscale opacity-60 hover:opacity-100 hover:grayscale-0 hover:border-space-cyan/50 transition-all duration-300">
-            <span class="font-alt uppercase tracking-widest text-xs text-white/60 group-hover:text-space-cyan">[Logo sponsor 8]</span>
-          </div>
+        <div class="participar__ctas" data-reveal>
+          <a href="[LINK_FORMULARIO]" class="btn btn--primary">
+            Subir mi obra
+            <svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>
+          </a>
+          <a href="#bases" class="btn btn--ghost">
+            Leer las bases
+            <svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg>
+          </a>
         </div>
       </div>
     </section>
 
     <!-- ============================================================
-         9 · 07 · BASES Y CONDICIONES — acordeón accesible, fondo navy
+         06 · SPONSORS
          ============================================================ -->
-    <section id="bases" class="relative py-24 lg:py-32 bg-space-navy overflow-hidden">
-      <div class="orbit-rings w-[500px] h-[500px] -left-48 bottom-0 opacity-40" aria-hidden="true"></div>
-      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-space-black to-space-navy"></div>
+    <section id="sponsors" class="sec sec--navy">
+      <div class="container">
+        <header class="sec-head" data-reveal>
+          <div class="sec-head__meta">
+            <span class="sec-num"><span class="sec-num__zero">0</span>6</span>
+            <span class="sec-head__line"></span>
+            <span class="sec-head__tag">Sponsors</span>
+          </div>
+          <h2 class="sec-head__title">Con el apoyo de</h2>
+          <p class="sec-head__lede">Quienes hacen posible esta misión creativa. El organizador reemplaza estos espacios por los logos reales.</p>
+        </header>
 
-      <div class="relative max-w-4xl mx-auto px-5 lg:px-8">
-        <div class="reveal flex items-center gap-4 mb-8">
-          <span class="font-display text-2xl sm:text-3xl"><span class="section-zero">0</span>7</span>
-          <span class="h-px flex-1 max-w-[120px] bg-space-cyan/40"></span>
-          <span class="font-alt uppercase tracking-[0.3em] text-space-cyan text-xs sm:text-sm">Bases y condiciones</span>
+        <div class="sponsors">
+          <div class="sponsor" data-reveal style="--d:.0s">[Logo sponsor 1]</div>
+          <div class="sponsor" data-reveal style="--d:.05s">[Logo sponsor 2]</div>
+          <div class="sponsor" data-reveal style="--d:.1s">[Logo sponsor 3]</div>
+          <div class="sponsor" data-reveal style="--d:.15s">[Logo sponsor 4]</div>
+          <div class="sponsor" data-reveal style="--d:.2s">[Logo sponsor 5]</div>
+          <div class="sponsor" data-reveal style="--d:.25s">[Logo sponsor 6]</div>
+          <div class="sponsor" data-reveal style="--d:.3s">[Logo sponsor 7]</div>
+          <div class="sponsor" data-reveal style="--d:.35s">[Logo sponsor 8]</div>
         </div>
 
-        <h2 class="reveal font-display text-2xl sm:text-4xl leading-snug mb-4">Las reglas de la misión</h2>
-        <p class="reveal text-sm text-white/50 mb-10 italic">Plantilla orientativa, no asesoría legal. Todo lo marcado como <span class="text-space-orange not-italic font-semibold">[completar]</span> debe definirlo el organizador.</p>
+        <p class="sponsors__note" data-reveal>
+          <svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>
+          ¿Querés acompañar la misión? Escribinos a <a href="mailto:[EMAIL_CONTACTO]">[EMAIL_CONTACTO]</a>
+        </p>
+      </div>
+    </section>
 
-        <!-- Acordeón con <details>/<summary> (accesible y nativo por teclado) -->
-        <div class="space-y-3" id="accordion">
-          <details class="reveal group rounded-2xl border border-white/10 bg-space-black/40 overflow-hidden">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 hover:bg-white/5 transition-colors">
-              <span class="font-display text-sm sm:text-base">Organización</span>
-              <svg class="w-5 h-5 text-space-cyan shrink-0 transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            </summary>
-            <div class="px-6 pb-5 text-sm text-white/70 leading-relaxed">Organiza Argentina Space <span class="text-space-orange font-semibold">[razón social / datos legales — completar]</span>.</div>
-          </details>
+    <!-- ============================================================
+         07 · BASES Y CONDICIONES — acordeón accesible
+         ============================================================ -->
+    <section id="bases" class="sec sec--black">
+      <span class="ring" style="width:520px;height:520px;left:-220px;bottom:-160px;opacity:.4" aria-hidden="true"></span>
 
-          <details class="reveal group rounded-2xl border border-white/10 bg-space-black/40 overflow-hidden">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 hover:bg-white/5 transition-colors">
-              <span class="font-display text-sm sm:text-base">Participación</span>
-              <svg class="w-5 h-5 text-space-cyan shrink-0 transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            </summary>
-            <div class="px-6 pb-5 text-sm text-white/70 leading-relaxed">Abierta a menores en dos categorías: <strong class="text-white">Exploradores (6–12)</strong> y <strong class="text-white">Cadetes (13–17)</strong>. Requiere autorización y datos de la madre, el padre o tutor/a, ya que los participantes son menores de edad.</div>
-          </details>
+      <div class="container">
+        <header class="sec-head" data-reveal>
+          <div class="sec-head__meta">
+            <span class="sec-num"><span class="sec-num__zero">0</span>7</span>
+            <span class="sec-head__line"></span>
+            <span class="sec-head__tag">Bases y condiciones</span>
+          </div>
+          <h2 class="sec-head__title">Las reglas de la misión</h2>
+        </header>
 
-          <details class="reveal group rounded-2xl border border-white/10 bg-space-black/40 overflow-hidden">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 hover:bg-white/5 transition-colors">
-              <span class="font-display text-sm sm:text-base">Temática obligatoria</span>
-              <svg class="w-5 h-5 text-space-cyan shrink-0 transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            </summary>
-            <div class="px-6 pb-5 text-sm text-white/70 leading-relaxed">El <strong class="text-white">Mono Juan</strong>, primer mono astronauta argentino. Toda obra debe representar su historia, su viaje o cómo se lo imagina cada participante.</div>
-          </details>
+        <div class="bases-wrap">
+          <p class="bases-note" data-reveal>
+            Plantilla orientativa, no asesoría legal. Todo lo marcado como <span class="todo-tag">[completar]</span> debe definirlo el organizador.
+          </p>
 
-          <details class="reveal group rounded-2xl border border-white/10 bg-space-black/40 overflow-hidden">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 hover:bg-white/5 transition-colors">
-              <span class="font-display text-sm sm:text-base">Obra</span>
-              <svg class="w-5 h-5 text-space-cyan shrink-0 transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            </summary>
-            <div class="px-6 pb-5 text-sm text-white/70 leading-relaxed">Original e inédita, de autoría propia. <strong class="text-white">1 obra por participante</strong> (ajustable). Técnica libre.</div>
-          </details>
+          <div class="acc" data-reveal>
+            <details>
+              <summary>
+                <span class="acc__num">§ 01</span>
+                <span class="acc__title">Organización</span>
+                <span class="acc__chev"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+              </summary>
+              <div class="acc__body">Organiza Argentina Space <span class="todo-tag">[razón social / datos legales — completar]</span>.</div>
+            </details>
 
-          <details class="reveal group rounded-2xl border border-white/10 bg-space-black/40 overflow-hidden">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 hover:bg-white/5 transition-colors">
-              <span class="font-display text-sm sm:text-base">Formato de entrega</span>
-              <svg class="w-5 h-5 text-space-cyan shrink-0 transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            </summary>
-            <div class="px-6 pb-5 text-sm text-white/70 leading-relaxed"><span class="text-space-orange font-semibold">[definir — ej. imagen JPG/PNG, máx. X MB, resolución mínima]</span> a través de <a href="[LINK_FORMULARIO]" class="text-space-cyan underline underline-offset-2">[LINK_FORMULARIO]</a> o <a href="mailto:[EMAIL_CONTACTO]" class="text-space-cyan underline underline-offset-2">[EMAIL_CONTACTO]</a>.</div>
-          </details>
+            <details>
+              <summary>
+                <span class="acc__num">§ 02</span>
+                <span class="acc__title">Participación</span>
+                <span class="acc__chev"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+              </summary>
+              <div class="acc__body">Abierta a menores en dos categorías: <strong>Exploradores (6–12)</strong> y <strong>Cadetes (13–17)</strong>. Requiere autorización y datos de la madre, el padre o tutor/a, ya que los participantes son menores de edad.</div>
+            </details>
 
-          <details class="reveal group rounded-2xl border border-white/10 bg-space-black/40 overflow-hidden">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 hover:bg-white/5 transition-colors">
-              <span class="font-display text-sm sm:text-base">Plazos</span>
-              <svg class="w-5 h-5 text-space-cyan shrink-0 transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            </summary>
-            <div class="px-6 pb-5 text-sm text-white/70 leading-relaxed">Desde el <strong class="text-white">lunes 8 de junio de 2026</strong> hasta el <strong class="text-white">domingo 5 de julio de 2026 a las 18:00 hs</strong> (hora de Argentina). No se aceptan entregas posteriores.</div>
-          </details>
+            <details>
+              <summary>
+                <span class="acc__num">§ 03</span>
+                <span class="acc__title">Temática obligatoria</span>
+                <span class="acc__chev"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+              </summary>
+              <div class="acc__body">El <strong>Mono Juan</strong>, primer mono astronauta argentino. Toda obra debe representar su historia, su viaje o cómo se lo imagina cada participante.</div>
+            </details>
 
-          <details class="reveal group rounded-2xl border border-white/10 bg-space-black/40 overflow-hidden">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 hover:bg-white/5 transition-colors">
-              <span class="font-display text-sm sm:text-base">Jurado y criterios de evaluación</span>
-              <svg class="w-5 h-5 text-space-cyan shrink-0 transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            </summary>
-            <div class="px-6 pb-5 text-sm text-white/70 leading-relaxed">Se evaluará <strong class="text-white">creatividad, relación con la temática, técnica y originalidad</strong>. El fallo es inapelable. <span class="text-space-orange font-semibold">[completar integrantes y fechas del jurado]</span></div>
-          </details>
+            <details>
+              <summary>
+                <span class="acc__num">§ 04</span>
+                <span class="acc__title">Obra</span>
+                <span class="acc__chev"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+              </summary>
+              <div class="acc__body">Original e inédita, de autoría propia. <strong>1 obra por participante</strong> (ajustable). Técnica libre.</div>
+            </details>
 
-          <details class="reveal group rounded-2xl border border-white/10 bg-space-black/40 overflow-hidden">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 hover:bg-white/5 transition-colors">
-              <span class="font-display text-sm sm:text-base">Premios</span>
-              <svg class="w-5 h-5 text-space-cyan shrink-0 transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            </summary>
-            <div class="px-6 pb-5 text-sm text-white/70 leading-relaxed">Detallados en la sección <a href="#premios" class="text-space-cyan underline underline-offset-2">Premios</a>. Incluye una <strong class="text-white">tablet de dibujo</strong> como premio principal por categoría.</div>
-          </details>
+            <details>
+              <summary>
+                <span class="acc__num">§ 05</span>
+                <span class="acc__title">Formato de entrega</span>
+                <span class="acc__chev"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+              </summary>
+              <div class="acc__body"><span class="todo-tag">[definir — ej. imagen JPG/PNG, máx. X MB, resolución mínima]</span> a través de <a href="[LINK_FORMULARIO]">[LINK_FORMULARIO]</a> o <a href="mailto:[EMAIL_CONTACTO]">[EMAIL_CONTACTO]</a>.</div>
+            </details>
 
-          <details class="reveal group rounded-2xl border border-white/10 bg-space-black/40 overflow-hidden">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 hover:bg-white/5 transition-colors">
-              <span class="font-display text-sm sm:text-base">Anuncio de ganadores</span>
-              <svg class="w-5 h-5 text-space-cyan shrink-0 transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            </summary>
-            <div class="px-6 pb-5 text-sm text-white/70 leading-relaxed"><span class="text-space-orange font-semibold">[fecha y canal de anuncio — completar]</span></div>
-          </details>
+            <details>
+              <summary>
+                <span class="acc__num">§ 06</span>
+                <span class="acc__title">Plazos</span>
+                <span class="acc__chev"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+              </summary>
+              <div class="acc__body">Desde el <strong>lunes 8 de junio de 2026</strong> hasta el <strong>domingo 5 de julio de 2026 a las 18:00 hs</strong> (hora de Argentina). No se aceptan entregas posteriores.</div>
+            </details>
 
-          <details class="reveal group rounded-2xl border border-white/10 bg-space-black/40 overflow-hidden">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 hover:bg-white/5 transition-colors">
-              <span class="font-display text-sm sm:text-base">Derechos</span>
-              <svg class="w-5 h-5 text-space-cyan shrink-0 transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            </summary>
-            <div class="px-6 pb-5 text-sm text-white/70 leading-relaxed">Al participar se autoriza a Argentina Space a exhibir y difundir las obras y el nombre y edad del autor o autora en sus canales, sin fines de lucro y con mención de autoría. <span class="text-space-orange font-semibold">[ajustar con asesoría legal]</span></div>
-          </details>
+            <details>
+              <summary>
+                <span class="acc__num">§ 07</span>
+                <span class="acc__title">Jurado y criterios de evaluación</span>
+                <span class="acc__chev"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+              </summary>
+              <div class="acc__body">Se evaluará <strong>creatividad, relación con la temática, técnica y originalidad</strong>. El fallo es inapelable. <span class="todo-tag">[completar integrantes y fechas del jurado]</span></div>
+            </details>
 
-          <details class="reveal group rounded-2xl border border-white/10 bg-space-black/40 overflow-hidden">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 hover:bg-white/5 transition-colors">
-              <span class="font-display text-sm sm:text-base">Datos personales</span>
-              <svg class="w-5 h-5 text-space-cyan shrink-0 transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            </summary>
-            <div class="px-6 pb-5 text-sm text-white/70 leading-relaxed">Tratados conforme a la normativa vigente, con consentimiento del adulto responsable. <a href="[LINK_PRIVACIDAD]" class="text-space-cyan underline underline-offset-2">[link política de privacidad]</a></div>
-          </details>
+            <details>
+              <summary>
+                <span class="acc__num">§ 08</span>
+                <span class="acc__title">Premios</span>
+                <span class="acc__chev"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+              </summary>
+              <div class="acc__body">Detallados en la sección <a href="#premios">Premios</a>. Incluye una <strong>tablet de dibujo</strong> como premio principal por categoría.</div>
+            </details>
 
-          <details class="reveal group rounded-2xl border border-white/10 bg-space-black/40 overflow-hidden">
-            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 hover:bg-white/5 transition-colors">
-              <span class="font-display text-sm sm:text-base">Aceptación</span>
-              <svg class="w-5 h-5 text-space-cyan shrink-0 transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            </summary>
-            <div class="px-6 pb-5 text-sm text-white/70 leading-relaxed">La participación implica la aceptación total de estas bases.</div>
-          </details>
+            <details>
+              <summary>
+                <span class="acc__num">§ 09</span>
+                <span class="acc__title">Anuncio de ganadores</span>
+                <span class="acc__chev"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+              </summary>
+              <div class="acc__body"><span class="todo-tag">[fecha y canal de anuncio — completar]</span></div>
+            </details>
+
+            <details>
+              <summary>
+                <span class="acc__num">§ 10</span>
+                <span class="acc__title">Derechos</span>
+                <span class="acc__chev"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+              </summary>
+              <div class="acc__body">Al participar se autoriza a Argentina Space a exhibir y difundir las obras y el nombre y edad del autor o autora en sus canales, sin fines de lucro y con mención de autoría. <span class="todo-tag">[ajustar con asesoría legal]</span></div>
+            </details>
+
+            <details>
+              <summary>
+                <span class="acc__num">§ 11</span>
+                <span class="acc__title">Datos personales</span>
+                <span class="acc__chev"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+              </summary>
+              <div class="acc__body">Tratados conforme a la normativa vigente, con consentimiento del adulto responsable. <a href="[LINK_PRIVACIDAD]">[link política de privacidad]</a></div>
+            </details>
+
+            <details>
+              <summary>
+                <span class="acc__num">§ 12</span>
+                <span class="acc__title">Aceptación</span>
+                <span class="acc__chev"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+              </summary>
+              <div class="acc__body">La participación implica la aceptación total de estas bases.</div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CTA FINAL
+         ============================================================ -->
+    <section class="sec cta-final" aria-label="Llamado final a participar">
+      <div class="stars" style="opacity:.5" aria-hidden="true"></div>
+      <div class="container">
+        <img class="cta-final__star" src="assets/logo/isotipo_estrella_gradiente.svg" alt="" aria-hidden="true" data-reveal="zoom" />
+        <h2 data-reveal>Tu dibujo puede <span class="hl">hacer historia</span></h2>
+        <p data-reveal style="--d:.1s">Como Juan en 1969, animate a despegar. Subí tu obra antes del domingo 5 de julio a las 18:00 hs.</p>
+        <div class="cta-final__ctas" data-reveal style="--d:.2s">
+          <a href="[LINK_FORMULARIO]" class="btn btn--primary">
+            Participar ahora
+            <svg class="icon" aria-hidden="true"><use href="#i-rocket"/></svg>
+          </a>
+          <a href="#historia" class="btn btn--ghost">
+            Conocer a Juan
+            <svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>
+          </a>
         </div>
       </div>
     </section>
   </main>
 
   <!-- ============================================================
-       10 · FOOTER — fondo space-black
+       FOOTER
        ============================================================ -->
-  <footer class="relative bg-space-black border-t border-white/10 overflow-hidden">
-    <div class="absolute inset-0 starfield opacity-40" aria-hidden="true"></div>
-    <div class="relative max-w-6xl mx-auto px-5 lg:px-8 py-16">
-      <div class="grid md:grid-cols-3 gap-10">
-        <!-- Marca -->
-        <div>
-          <img src="assets/logo/logo_horizontal_positivo.png" alt="Argentina Space" class="h-10 w-auto mb-5" />
-          <p class="text-white/60 text-sm leading-relaxed max-w-xs">Liderando el ecosistema espacial argentino. De la imaginación de un chico al futuro de toda una nación.</p>
+  <footer class="footer">
+    <div class="stars" style="opacity:.35" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <img src="assets/logo/logo_horizontal_positivo.png" alt="Argentina Space" />
+          <p>Liderando el ecosistema espacial argentino. De la imaginación de un chico al futuro de toda una nación.</p>
         </div>
 
-        <!-- Navegación -->
-        <div>
-          <h3 class="font-alt uppercase tracking-widest text-xs text-space-cyan mb-4">Concurso</h3>
-          <ul class="space-y-2 text-sm text-white/70">
-            <li><a href="#historia" class="hover:text-space-cyan transition-colors">La historia del Mono Juan</a></li>
-            <li><a href="#categorias" class="hover:text-space-cyan transition-colors">Categorías</a></li>
-            <li><a href="#premios" class="hover:text-space-cyan transition-colors">Premios</a></li>
-            <li><a href="#bases" class="hover:text-space-cyan transition-colors">Bases y condiciones</a></li>
+        <nav aria-label="Navegación del concurso">
+          <h3>Concurso</h3>
+          <ul class="footer__nav">
+            <li><a href="#historia"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg> La historia del Mono Juan</a></li>
+            <li><a href="#categorias"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg> Categorías</a></li>
+            <li><a href="#premios"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg> Premios</a></li>
+            <li><a href="#participar"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg> Cómo participar</a></li>
+            <li><a href="#bases"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg> Bases y condiciones</a></li>
           </ul>
-        </div>
+        </nav>
 
-        <!-- Contacto + redes -->
         <div>
-          <h3 class="font-alt uppercase tracking-widest text-xs text-space-cyan mb-4">Contacto</h3>
-          <p class="text-sm text-white/70 mb-4"><a href="mailto:[EMAIL_CONTACTO]" class="hover:text-space-cyan transition-colors underline underline-offset-2">[EMAIL_CONTACTO]</a></p>
-          <div class="flex gap-3">
-            <a href="[RED_INSTAGRAM]" aria-label="Instagram" class="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-white/70 hover:text-space-cyan hover:border-space-cyan/50 transition-colors">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 01-1.38-.9 3.7 3.7 0 01-.9-1.38c-.16-.43-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 3.24a6.6 6.6 0 100 13.2 6.6 6.6 0 000-13.2zm0 10.89a4.29 4.29 0 110-8.58 4.29 4.29 0 010 8.58zm6.84-11.15a1.54 1.54 0 11-3.08 0 1.54 1.54 0 013.08 0z"/></svg>
-            </a>
-            <a href="[RED_FACEBOOK]" aria-label="Facebook" class="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-white/70 hover:text-space-cyan hover:border-space-cyan/50 transition-colors">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 10-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0022 12z"/></svg>
-            </a>
-            <a href="[RED_YOUTUBE]" aria-label="YouTube" class="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-white/70 hover:text-space-cyan hover:border-space-cyan/50 transition-colors">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 00-2.12-2.12C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.53A3 3 0 00.5 6.2 31.3 31.3 0 000 12a31.3 31.3 0 00.5 5.8 3 3 0 002.12 2.12c1.88.53 9.38.53 9.38.53s7.5 0 9.38-.53a3 3 0 002.12-2.12A31.3 31.3 0 0024 12a31.3 31.3 0 00-.5-5.8zM9.6 15.6V8.4l6.27 3.6-6.27 3.6z"/></svg>
-            </a>
+          <h3>Contacto</h3>
+          <a class="footer__mail" href="mailto:[EMAIL_CONTACTO]">
+            <svg class="icon icon--sm" aria-hidden="true"><use href="#i-mail"/></svg>
+            [EMAIL_CONTACTO]
+          </a>
+          <div class="footer__social">
+            <a href="[RED_INSTAGRAM]" aria-label="Instagram"><svg class="icon" aria-hidden="true"><use href="#i-ig"/></svg></a>
+            <a href="[RED_FACEBOOK]" aria-label="Facebook"><svg class="icon" aria-hidden="true"><use href="#i-fb"/></svg></a>
+            <a href="[RED_YOUTUBE]" aria-label="YouTube"><svg class="icon" aria-hidden="true"><use href="#i-yt"/></svg></a>
           </div>
         </div>
       </div>
 
-      <div class="border-t border-white/10 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/40">
+      <div class="footer__bottom">
         <p>© 2026 Argentina Space. Todos los derechos reservados.</p>
         <p>Hecho con imaginación argentina, en honor a Juan. 🚀</p>
       </div>
     </div>
   </footer>
 
+  <!-- Volver arriba -->
+  <div class="to-top" id="toTop">
+    <a href="#hero" class="btn-circle" aria-label="Volver arriba">
+      <svg class="icon" aria-hidden="true"><use href="#i-arrow-up"/></svg>
+    </a>
+  </div>
+
   <!-- ============================================================
-       JAVASCRIPT VANILLA — cuenta regresiva · menú mobile · reveal scroll
+       JAVASCRIPT — nav, scrollspy, menú, countdown, reveals, progreso
        ============================================================ -->
   <script>
     (function () {
       'use strict';
 
-      /* --- 1) MENÚ MOBILE --- */
-      var menuToggle = document.getElementById('menuToggle');
-      var mobileMenu = document.getElementById('mobileMenu');
-      if (menuToggle && mobileMenu) {
-        menuToggle.addEventListener('click', function () {
-          var open = mobileMenu.classList.toggle('hidden') === false;
-          menuToggle.setAttribute('aria-expanded', String(open));
-          menuToggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
-        });
-        // cerrar al clickear un link
-        mobileMenu.querySelectorAll('a').forEach(function (link) {
-          link.addEventListener('click', function () {
-            mobileMenu.classList.add('hidden');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            menuToggle.setAttribute('aria-label', 'Abrir menú');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* --- 1) NAVBAR: estado scrolled + barra de progreso + volver arriba --- */
+      var nav = document.getElementById('nav');
+      var progress = document.getElementById('progress');
+      var toTop = document.getElementById('toTop');
+      var ticking = false;
+
+      function onScroll() {
+        var y = window.scrollY;
+        nav.classList.toggle('is-scrolled', y > 24);
+        toTop.classList.toggle('is-visible', y > window.innerHeight * 0.8);
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
+        ticking = false;
+      }
+      window.addEventListener('scroll', function () {
+        if (!ticking) { window.requestAnimationFrame(onScroll); ticking = true; }
+      }, { passive: true });
+      onScroll();
+
+      /* --- 2) SCROLLSPY: resalta el link de la sección visible --- */
+      var spyLinks = document.querySelectorAll('.nav__link');
+      var spyMap = {};
+      spyLinks.forEach(function (link) {
+        var id = link.getAttribute('href').slice(1);
+        spyMap[id] = link;
+      });
+      if ('IntersectionObserver' in window) {
+        var spy = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            var link = spyMap[entry.target.id];
+            if (!link) return;
+            if (entry.isIntersecting) {
+              spyLinks.forEach(function (l) { l.classList.remove('is-active'); });
+              link.classList.add('is-active');
+            }
           });
+        }, { rootMargin: '-45% 0px -50% 0px' });
+        Object.keys(spyMap).forEach(function (id) {
+          var sec = document.getElementById(id);
+          if (sec) spy.observe(sec);
         });
       }
 
-      /* --- 2) CUENTA REGRESIVA hacia 2026-07-05 18:00 (hora Argentina, -03:00) --- */
+      /* --- 3) MENÚ MOBILE --- */
+      var burger = document.getElementById('burger');
+      var menu = document.getElementById('menu');
+
+      function setMenu(open) {
+        menu.classList.toggle('is-open', open);
+        burger.classList.toggle('is-open', open);
+        burger.setAttribute('aria-expanded', String(open));
+        burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+        menu.setAttribute('aria-hidden', String(!open));
+        document.body.style.overflow = open ? 'hidden' : '';
+      }
+      burger.addEventListener('click', function () {
+        setMenu(!menu.classList.contains('is-open'));
+      });
+      menu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () { setMenu(false); });
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && menu.classList.contains('is-open')) setMenu(false);
+      });
+
+      /* --- 4) CUENTA REGRESIVA hacia 2026-07-05 18:00 (hora Argentina, -03:00) --- */
       var target = new Date('2026-07-05T18:00:00-03:00').getTime();
-      var elDays  = document.getElementById('cd-days');
-      var elHours = document.getElementById('cd-hours');
-      var elMins  = document.getElementById('cd-mins');
-      var elSecs  = document.getElementById('cd-secs');
+      var cells = {
+        days:  document.getElementById('cd-days'),
+        hours: document.getElementById('cd-hours'),
+        mins:  document.getElementById('cd-mins'),
+        secs:  document.getElementById('cd-secs')
+      };
       var countdownBox = document.getElementById('countdown');
 
       function pad(n) { return n < 10 ? '0' + n : String(n); }
 
+      function setCell(el, value) {
+        if (!el || el.textContent === value) return;
+        el.textContent = value;
+        if (!reduceMotion) {
+          el.classList.remove('tick');
+          void el.offsetWidth; /* reinicia la animación */
+          el.classList.add('tick');
+        }
+      }
+
       function tick() {
         var diff = target - Date.now();
         if (diff <= 0) {
-          // Convocatoria cerrada: reemplaza el bloque
           if (countdownBox) {
             countdownBox.innerHTML =
-              '<p class="font-display text-xl sm:text-2xl text-space-orange">Convocatoria cerrada</p>';
+              '<p style="font-family:var(--font-display);font-size:22px;color:var(--orange)">Convocatoria cerrada</p>';
           }
           if (timer) clearInterval(timer);
           return;
         }
-        var d = Math.floor(diff / 86400000);
-        var h = Math.floor((diff % 86400000) / 3600000);
-        var m = Math.floor((diff % 3600000) / 60000);
-        var s = Math.floor((diff % 60000) / 1000);
-        if (elDays)  elDays.textContent  = pad(d);
-        if (elHours) elHours.textContent = pad(h);
-        if (elMins)  elMins.textContent  = pad(m);
-        if (elSecs)  elSecs.textContent  = pad(s);
+        setCell(cells.days,  pad(Math.floor(diff / 86400000)));
+        setCell(cells.hours, pad(Math.floor((diff % 86400000) / 3600000)));
+        setCell(cells.mins,  pad(Math.floor((diff % 3600000) / 60000)));
+        setCell(cells.secs,  pad(Math.floor((diff % 60000) / 1000)));
       }
       tick();
       var timer = setInterval(tick, 1000);
 
-      /* --- 3) REVEAL AL HACER SCROLL (IntersectionObserver) --- */
-      var revealEls = document.querySelectorAll('.reveal');
-      if ('IntersectionObserver' in window) {
+      /* --- 5) REVEALS al hacer scroll --- */
+      var revealEls = document.querySelectorAll('[data-reveal]');
+      if ('IntersectionObserver' in window && !reduceMotion) {
         var io = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
-              entry.target.classList.add('is-visible');
+              entry.target.classList.add('is-in');
               io.unobserve(entry.target);
             }
           });
-        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+        }, { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
         revealEls.forEach(function (el) { io.observe(el); });
       } else {
-        // Fallback sin soporte: mostrar todo
-        revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+        revealEls.forEach(function (el) { el.classList.add('is-in'); });
       }
     })();
   </script>
