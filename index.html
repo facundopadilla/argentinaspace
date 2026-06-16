@@ -883,6 +883,8 @@
       transition: border-color .3s, color .3s, background .3s, transform .3s var(--ease);
     }
     .sponsor:hover { border-color: rgba(72,246,255,.45); color: var(--cyan); background: rgba(72,246,255,.05); transform: translateY(-3px); }
+    .sponsor img { max-width: 78%; max-height: 58px; object-fit: contain; opacity: .75; transition: opacity .3s var(--ease); }
+    .sponsor:hover img { opacity: 1; }
     .sponsors__note { margin-top: 28px; font-size: 14px; color: var(--w-60); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .sponsors__note .icon { color: var(--orange); }
     .sponsors__note a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
@@ -1607,13 +1609,26 @@
         </header>
 
         <div class="sponsors">
-          <div class="sponsor" data-reveal style="--d:.0s">Alchemia LLC</div>
-          <div class="sponsor" data-reveal style="--d:.05s">PROPULSAR<br><span style="font-size:10px;letter-spacing:.1em">(Argentina Space Cluster)</span></div>
-          <div class="sponsor" data-reveal style="--d:.1s">Gobierno de la Provincia de Salta<br><span style="font-size:10px;letter-spacing:.1em">Ministerio de Economía y Servicios Públicos / Subsec. de Economía del Conocimiento</span></div>
-          <div class="sponsor" data-reveal style="--d:.15s">Municipalidad de Salta</div>
-          <div class="sponsor" data-reveal style="--d:.2s">Endeavor Argentina</div>
-          <div class="sponsor" data-reveal style="--d:.25s">Foro de Integración y Desarrollo Regional Santa Fe<br><span style="font-size:10px;letter-spacing:.1em">(FIDR)</span></div>
-          <div class="sponsor" data-reveal style="--d:.3s">SaltaDev</div>
+          <div class="sponsor" data-reveal style="--d:.0s">
+            <img src="assets/sponsors/alchemia-blanco.jpg" alt="Alchemia LLC" />
+          </div>
+          <div class="sponsor" data-reveal style="--d:.05s">
+            <img src="assets/sponsors/propulsar-blanco.jpg" alt="PROPULSAR — Argentina Space Cluster" />
+          </div>
+          <div class="sponsor" data-reveal style="--d:.1s">
+            <img src="assets/sponsors/economia-logo.png" alt="Gobierno de la Provincia de Salta — Ministerio de Economía y Servicios Públicos" />
+          </div>
+          <div class="sponsor" data-reveal style="--d:.15s">
+            <img src="assets/sponsors/municipalidad-blanco.png" alt="Municipalidad de Salta" />
+          </div>
+          <div class="sponsor" data-reveal style="--d:.2s">
+            <img src="assets/sponsors/endeavor-blanco.png" alt="Endeavor Argentina" />
+          </div>
+          <div class="sponsor" data-reveal style="--d:.25s">
+            <img src="assets/sponsors/nexa-logo.png" alt="Nexa" />
+          </div>
+          <div class="sponsor" data-reveal style="--d:.3s">Foro de Integración y Desarrollo Regional Santa Fe<br><span style="font-size:10px;letter-spacing:.1em">(FIDR)</span></div>
+          <div class="sponsor" data-reveal style="--d:.35s">SaltaDev</div>
         </div>
       </div>
     </section>
