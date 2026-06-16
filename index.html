@@ -402,6 +402,10 @@
     .pill--orange .icon { color: var(--orange); }
 
     .hero__ctas { display: flex; flex-wrap: wrap; gap: 16px; }
+    @media (max-width: 1023px) {
+      .hero { padding-bottom: 130px; }
+      .hero__ctas { justify-content: center; }
+    }
 
     /* Animación de arranque del hero (stagger en cascada) */
     @keyframes boot-up { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
