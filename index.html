@@ -875,16 +875,20 @@
     .sponsors { display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr); }
     @media (min-width: 720px) { .sponsors { grid-template-columns: repeat(4, 1fr); } }
     .sponsor {
-      display: grid; place-items: center; min-height: 110px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+      min-height: 110px;
       border: 1px dashed rgba(255,255,255,.16); border-radius: var(--r-md);
       background: rgba(255,255,255,.03);
       font-family: var(--font-alt); font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
       color: var(--w-45); text-align: center; padding: 14px;
+      text-decoration: none;
       transition: border-color .3s, color .3s, background .3s, transform .3s var(--ease);
     }
     .sponsor:hover { border-color: rgba(72,246,255,.45); color: var(--cyan); background: rgba(72,246,255,.05); transform: translateY(-3px); }
-    .sponsor img { max-width: 78%; max-height: 58px; object-fit: contain; opacity: .75; transition: opacity .3s var(--ease); }
+    .sponsor img { max-width: 78%; max-height: 52px; object-fit: contain; opacity: .75; transition: opacity .3s var(--ease); }
     .sponsor:hover img { opacity: 1; }
+    .sponsor__name { font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--w-45); text-align: center; line-height: 1.45; transition: color .3s; }
+    .sponsor:hover .sponsor__name { color: var(--cyan); }
     .sponsors__note { margin-top: 28px; font-size: 14px; color: var(--w-60); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .sponsors__note .icon { color: var(--orange); }
     .sponsors__note a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
@@ -1609,28 +1613,35 @@
         </header>
 
         <div class="sponsors">
-          <div class="sponsor" data-reveal style="--d:.0s">
+          <a class="sponsor" href="https://www.alchemia-tech.com/" target="_blank" rel="noopener noreferrer" data-reveal style="--d:.0s">
             <img src="assets/sponsors/alchemia-blanco.jpg" alt="Alchemia LLC" />
-          </div>
-          <div class="sponsor" data-reveal style="--d:.05s">
+            <span class="sponsor__name">Alchemia LLC</span>
+          </a>
+          <a class="sponsor" href="https://www.propulsar.ar/" target="_blank" rel="noopener noreferrer" data-reveal style="--d:.05s">
             <img src="assets/sponsors/propulsar-blanco.jpg" alt="PROPULSAR — Argentina Space Cluster" />
-          </div>
-          <div class="sponsor" data-reveal style="--d:.1s">
+            <span class="sponsor__name">Propulsar</span>
+          </a>
+          <a class="sponsor" href="https://economiasalta.gob.ar/conosalta/" target="_blank" rel="noopener noreferrer" data-reveal style="--d:.1s">
             <img src="assets/sponsors/economia-logo.png" alt="Gobierno de la Provincia de Salta — Ministerio de Economía y Servicios Públicos" />
-          </div>
-          <div class="sponsor" data-reveal style="--d:.15s">
+            <span class="sponsor__name">Economía del Conocimiento · Salta</span>
+          </a>
+          <a class="sponsor" href="https://municipalidadsalta.gob.ar/" target="_blank" rel="noopener noreferrer" data-reveal style="--d:.15s">
             <img src="assets/sponsors/municipalidad-blanco.png" alt="Municipalidad de Salta" />
-          </div>
-          <div class="sponsor" data-reveal style="--d:.2s">
+            <span class="sponsor__name">Municipalidad de Salta</span>
+          </a>
+          <a class="sponsor" href="https://www.endeavor.org.ar/" target="_blank" rel="noopener noreferrer" data-reveal style="--d:.2s">
             <img src="assets/sponsors/endeavor-blanco.png" alt="Endeavor Argentina" />
-          </div>
-          <div class="sponsor" data-reveal style="--d:.25s">
+            <span class="sponsor__name">Endeavor Argentina</span>
+          </a>
+          <a class="sponsor" href="https://nexa.builders/" target="_blank" rel="noopener noreferrer" data-reveal style="--d:.25s">
             <img src="assets/sponsors/nexa-logo.png" alt="Nexa" />
-          </div>
+            <span class="sponsor__name">Nexa</span>
+          </a>
           <div class="sponsor" data-reveal style="--d:.3s">Foro de Integración y Desarrollo Regional Santa Fe<br><span style="font-size:10px;letter-spacing:.1em">(FIDR)</span></div>
-          <div class="sponsor" data-reveal style="--d:.35s">
+          <a class="sponsor" href="https://salta.dev/" target="_blank" rel="noopener noreferrer" data-reveal style="--d:.35s">
             <img src="assets/sponsors/saltadev-logo.png" alt="SaltaDev" />
-          </div>
+            <span class="sponsor__name">SaltaDev</span>
+          </a>
         </div>
       </div>
     </section>
